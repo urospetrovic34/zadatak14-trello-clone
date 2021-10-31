@@ -160,6 +160,10 @@ main{
     border-radius: 5px;
 }
 
+.list-cards{
+    position: relative;
+}
+
 .list-header{
     display:flex;
     justify-content:space-between;
@@ -240,6 +244,25 @@ main{
     padding:10px;
     cursor: pointer;
     margin-bottom: 5px;
+    -webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+-o-user-select: none;
+user-select: none;
+}
+
+.card-movable{
+    position:absolute;
+    width: 100%;
+    -webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+-o-user-select: none;
+user-select: none;
 }
 
 .card:hover{
@@ -270,6 +293,7 @@ main{
 .add-list{
     display:flex;
     flex-direction: column;
+    width: 300px;
     background-color: transparent;
 }
 
