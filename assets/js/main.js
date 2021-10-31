@@ -10,7 +10,7 @@ console.log(cardLists)
 window.addEventListener("load",(e)=>{
     localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
     cards.forEach(card => card.setAttribute('draggable',true))
-    cardLists.forEach(list => list.innerHTML.length === 0 ? list.style.height = "100px" : null)
+    cardLists.forEach(list => list.innerHTML.length === 0 ? list.classList.add("empty-list") : null)
 })
 
 cards.forEach(card=>card.addEventListener("dragstart",(e)=>{
@@ -34,6 +34,8 @@ cards.forEach(card=>card.addEventListener("drag",(e)=>{
     card.style.top = (card.offsetTop - posY) + "px"
     card.style.left = (card.offsetLeft - posX)  + "px"
     card.classList.add("card-movable")
+    /*ODREKAO GA SE U NOVINAMA*/
+    /*card.parentNode.removeChild(draggedItem)*/
 }),false)
 
 cards.forEach(card=>card.addEventListener("dragend",(e)=>{
@@ -41,30 +43,15 @@ cards.forEach(card=>card.addEventListener("dragend",(e)=>{
     card.classList.remove("card-movable")
 }),false)
 
-cards.forEach(card=>card.addEventListener("dragover",(e)=>{
+cardLists.forEach(list=>list.addEventListener("dragover",(e)=>{
     e.preventDefault()
-}),false)
-
-cards.forEach(card=>card.addEventListener("dragenter",(e)=>{
-    if(!card.classList.contains("card-movable")){
-        card.style.background = "purple"
+    if(list.innerHTML.length === 0){
+        list.classList.add("empty-list")
     }
-}),false)
-
-cards.forEach(card=>card.addEventListener("dragleave",(e)=>{
-    if(!card.classList.contains("card-movable")){
-        card.style.background = "white"
-    }
-}),false)
-
-cardLists.forEach(list=>list.addEventListener("dragenter",(e)=>{
-    e.preventDefault()
-    list.style.background = "blue"
 }),false)
 
 cardLists.forEach(list=>list.addEventListener("drop",(e)=>{
     e.preventDefault()
-    list.style.background = "red"
-    draggedItem.parentNode.removeChild(draggedItem)
     list.appendChild(draggedItem)
+    list.classList.remove("empty-list")
 }),false)

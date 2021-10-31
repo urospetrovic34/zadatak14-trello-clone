@@ -105,6 +105,10 @@ header{
     margin-left: 5px;
 }
 
+.empty-list{
+    height:100px;
+}
+
 main{
     flex: 1;
     position: relative;
@@ -162,6 +166,7 @@ main{
 
 .list-cards{
     position: relative;
+    width: 100%;
 }
 
 .list-header{
