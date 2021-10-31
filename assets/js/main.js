@@ -1,6 +1,7 @@
 const listContainerWrapper = document.querySelector(".list-container-wrapper")
 const cards = document.querySelectorAll(".card")
 const cardLists = document.querySelectorAll(".list-cards")
+const mainContainer = document.querySelector(".main-container")
 let x = 0
 let y = 0
 let draggedItem
@@ -20,10 +21,10 @@ cards.forEach(card=>card.addEventListener("dragstart",(e)=>{
     e.dataTransfer.setDragImage(img, 0, 0);
 }),false)
 
-window.addEventListener("mousedown",(e)=>{
+cards.forEach(card=>card.addEventListener("mousedown",(e)=>{
     x = e.clientX
     y = e.clientY
-})
+}),false)
 
 cards.forEach(card=>card.addEventListener("drag",(e)=>{
     e.preventDefault()
@@ -35,7 +36,7 @@ cards.forEach(card=>card.addEventListener("drag",(e)=>{
     card.style.left = (card.offsetLeft - posX)  + "px"
     card.classList.add("card-movable")
     /*ODREKAO GA SE U NOVINAMA*/
-    /*card.parentNode.removeChild(draggedItem)*/
+    card.parentNode.removeChild(draggedItem)
 }),false)
 
 cards.forEach(card=>card.addEventListener("dragend",(e)=>{
@@ -45,9 +46,6 @@ cards.forEach(card=>card.addEventListener("dragend",(e)=>{
 
 cardLists.forEach(list=>list.addEventListener("dragover",(e)=>{
     e.preventDefault()
-    if(list.innerHTML.length === 0){
-        list.classList.add("empty-list")
-    }
 }),false)
 
 cardLists.forEach(list=>list.addEventListener("drop",(e)=>{
@@ -55,3 +53,7 @@ cardLists.forEach(list=>list.addEventListener("drop",(e)=>{
     list.appendChild(draggedItem)
     list.classList.remove("empty-list")
 }),false)
+
+mainContainer.addEventListener("drag",(e)=>{
+    e.preventDefault()
+})
