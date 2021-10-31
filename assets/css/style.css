@@ -123,11 +123,15 @@ main{
     margin-bottom: 10px;
 }
 
+.main-container > div:nth-child(1){
+    margin-left: 5px;
+}
+
 .list-container{
     width:400px;
     display:inline-block;
     height:100%;
-    margin:10px 10px;
+    margin:10px 5px;
 }
 
 ::-webkit-scrollbar{
@@ -160,6 +164,7 @@ main{
     justify-content:space-between;
     align-items: center;
     cursor: pointer;
+    margin-bottom: 5px;
 }
 
 .list-title{
@@ -251,6 +256,20 @@ main{
     width:20%;
     background-color: red;
     border-radius: 75px;
+}
+
+.add-list-container{
+    width: 400px;
+    display: inline-block;
+    height: 100%;
+    margin-left: 5px;
+    margin-right: 10px;
+}
+
+.add-list{
+    display:flex;
+    flex-direction: column;
+    background-color: transparent;
 }
 
 /*OVO TREBA DA SE SREDI*/

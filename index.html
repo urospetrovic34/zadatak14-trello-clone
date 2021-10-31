@@ -1,209 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assets/css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
     <link rel="icon" href="./assets/favicon-32x32.png" type="image/gif" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <title>Not Trello</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="wrapper">
-        <header>
-            <p class="header-paragraph">Trello</p>
-        </header>
-        <div class="sub-header">
-            <div class="sub-header-section-one">
-                <button class="board-first-button">
-                    Board
-                </button>
-                <input type="text" class="board-name-input">
-                <button class="bookmark-button">
-                    <i class="far fa-star"></i>
-                </button>
-                <div class="sub-header-separator"></div>
-                <button class="workspace-button">
-                    Somebodys workspace
-                </button>
-                <div class="sub-header-separator"></div>
-                <button class="workspace-visibility-button">
-                    Workspace visibility
-                </button>
-                <div class="sub-header-separator"></div>
-                <button class="invite-button">
-                    Invite
-                </button>
-            </div>
-            <div class="sub-header-section-two">
-                <button class="calendar">
-                    Calendar Power-Up
-                </button>
-                <div class="sub-header-separator"></div>
-                <button class="filter-button">
-                    Filter
-                </button>
-                <button class="menu-button">
-                    Show menu
-                </button>
-            </div>
+      <header>
+        <p class="header-paragraph">Trello</p>
+      </header>
+      <div class="sub-header">
+        <div class="sub-header-section-one">
+          <button class="board-first-button">Board</button>
+          <input type="text" class="board-name-input" />
+          <button class="bookmark-button">
+            <i class="far fa-star"></i>
+          </button>
+          <div class="sub-header-separator"></div>
+          <button class="workspace-button">Somebodys workspace</button>
+          <div class="sub-header-separator"></div>
+          <button class="workspace-visibility-button">
+            Workspace visibility
+          </button>
+          <div class="sub-header-separator"></div>
+          <button class="invite-button">Invite</button>
         </div>
-        <main>
-            <div class="main-container">
-                <div class="list-container">
-                    <div class="list">
-                        <div class="list-header">
-                            <div>
-                                <input type="text" class="list-title" value="Objective Eins">
-                            </div>
-                            <div>
-                                <button class="list-menu-button">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="list-cards">
-                            <!--PRIMER KARTICE SA SLIKOM-->
-                            <div class="card">
-                                <img class="card-image" src="./assets/71QjFzFKjBL.jpg" alt="batman">
-                                <p class="card-name">Batman</p>
-                                <div class="card-more-info">
-                                    <!--AKO KARTICA IMA OPIS, ATTACHMENT-E, KONTROLNU LISTU I SLICNE GLUPOSTI OVDE DOKUČITI-->
-                                    <button>
-                                        <i class="fas fa-align-justify"></i>
-                                    </button>
-                                    <button>
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button>
-                                        <i class="fas fa-paperclip"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <p class="card-name">Gunnery Sgt. Hartman</p>
-                                <div class="card-more-info">
-                                    <!--AKO KARTICA IMA OPIS, ATTACHMENT-E, KONTROLNU LISTU I SLICNE GLUPOSTI OVDE DOKUČITI-->
-                                    <button>
-                                        <i class="fas fa-align-justify"></i>
-                                    </button>
-                                    <button>
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button>
-                                        <i class="fas fa-paperclip"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-footer">
-                            <div>
-                                <button class="list-add-card-button">
-                                    + Add a card
-                                </button>
-                            </div>
-                            <div>
-                                <button class="list-add-card-template-button">
-                                    <i class="fas fa-file"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+        <div class="sub-header-section-two">
+          <button class="calendar">Calendar Power-Up</button>
+          <div class="sub-header-separator"></div>
+          <button class="filter-button">Filter</button>
+          <button class="menu-button">Show menu</button>
+        </div>
+      </div>
+      <main>
+        <div class="main-container">
+          <div class="list-container-wrapper">
+            <div class="list-container">
+              <div class="list">
+                <div class="list-header">
+                  <div>
+                    <input
+                      type="text"
+                      class="list-title"
+                      value="Objective Eins"
+                    />
+                  </div>
+                  <div>
+                    <button class="list-menu-button">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
                 </div>
-                <div class="list-container">
-                    <div class="list">
-                        <div class="list-header">
-                            <div>
-                                <input type="text" class="list-title" value="Objective Zwei">
-                            </div>
-                            <div>
-                                <button class="list-menu-button">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="list-cards">
-
-                        </div>
-                        <div class="list-footer">
-                            <div>
-                                <button class="list-add-card-button">
-                                    + Add a card
-                                </button>
-                            </div>
-                            <div>
-                                <button class="list-add-card-template-button">
-                                    <i class="fas fa-file"></i>
-                                </button>
-                            </div>
-                        </div>
+                <div class="list-cards">
+                  <!--PRIMER KARTICE SA SLIKOM-->
+                  <div class="card">
+                    <img
+                      class="card-image"
+                      src="./assets/71QjFzFKjBL.jpg"
+                      alt="batman"
+                    />
+                    <p class="card-name">Batman</p>
+                    <div class="card-more-info">
+                      <!--AKO KARTICA IMA OPIS, ATTACHMENT-E, KONTROLNU LISTU I SLICNE GLUPOSTI OVDE DOKUČITI-->
+                      <button>
+                        <i class="fas fa-align-justify"></i>
+                      </button>
+                      <button>
+                        <i class="fas fa-check"></i>
+                      </button>
+                      <button>
+                        <i class="fas fa-paperclip"></i>
+                      </button>
                     </div>
-                </div>
-                <div class="list-container">
-                    <div class="list">
-                        <div class="list-header">
-                            <div>
-                                <input type="text" class="list-title" value="Objective Drei">
-                            </div>
-                            <div>
-                                <button class="list-menu-button">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="list-cards">
-
-                        </div>
-                        <div class="list-footer">
-                            <div>
-                                <button class="list-add-card-button">
-                                    + Add a card
-                                </button>
-                            </div>
-                            <div>
-                                <button class="list-add-card-template-button">
-                                    <i class="fas fa-file"></i>
-                                </button>
-                            </div>
-                        </div>
+                  </div>
+                  <div class="card">
+                    <p class="card-name">Gunnery Sgt. Hartman</p>
+                    <div class="card-more-info">
+                      <!--AKO KARTICA IMA OPIS, ATTACHMENT-E, KONTROLNU LISTU I SLICNE GLUPOSTI OVDE DOKUČITI-->
+                      <button>
+                        <i class="fas fa-align-justify"></i>
+                      </button>
+                      <button>
+                        <i class="fas fa-check"></i>
+                      </button>
+                      <button>
+                        <i class="fas fa-paperclip"></i>
+                      </button>
                     </div>
+                  </div>
                 </div>
-                <div class="list-container">
-                    <div class="list">
-                        <div class="list-header">
-                            <div>
-                                <input type="text" class="list-title" value="Objective Vier">
-                            </div>
-                            <div>
-                                <button class="list-menu-button">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="list-cards">
-
-                        </div>
-                        <div class="list-footer">
-                            <div>
-                                <button class="list-add-card-button">
-                                    + Add a card
-                                </button>
-                            </div>
-                            <div>
-                                <button class="list-add-card-template-button">
-                                    <i class="fas fa-file"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="list-footer">
+                  <div>
+                    <button class="list-add-card-button">+ Add a card</button>
+                  </div>
+                  <div>
+                    <button class="list-add-card-template-button">
+                      <i class="fas fa-file"></i>
+                    </button>
+                  </div>
                 </div>
+              </div>
             </div>
-        </main>
+            <div class="list-container">
+              <div class="list">
+                <div class="list-header">
+                  <div>
+                    <input
+                      type="text"
+                      class="list-title"
+                      value="Objective Zwei"
+                    />
+                  </div>
+                  <div>
+                    <button class="list-menu-button">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="list-cards">
+                    <div class="card">
+                      <p class="card-name">Star Trek: Voyager</p>
+                      <div class="card-more-info">
+                        <!--AKO KARTICA IMA OPIS, ATTACHMENT-E, KONTROLNU LISTU I SLICNE GLUPOSTI OVDE DOKUČITI-->
+                        <button>
+                          <i class="fas fa-align-justify"></i>
+                        </button>
+                        <button>
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button>
+                          <i class="fas fa-paperclip"></i>
+                        </button>
+                      </div>
+                    </div>
+                </div>
+                <div class="list-footer">
+                  <div>
+                    <button class="list-add-card-button">+ Add a card</button>
+                  </div>
+                  <div>
+                    <button class="list-add-card-template-button">
+                      <i class="fas fa-file"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="list-container">
+              <div class="list">
+                <div class="list-header">
+                  <div>
+                    <input
+                      type="text"
+                      class="list-title"
+                      value="Objective Drei"
+                    />
+                  </div>
+                  <div>
+                    <button class="list-menu-button">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="list-cards"></div>
+                <div class="list-footer">
+                  <div>
+                    <button class="list-add-card-button">+ Add a card</button>
+                  </div>
+                  <div>
+                    <button class="list-add-card-template-button">
+                      <i class="fas fa-file"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="list-container">
+              <div class="list">
+                <div class="list-header">
+                  <div>
+                    <input
+                      type="text"
+                      class="list-title"
+                      value="Objective Vier"
+                    />
+                  </div>
+                  <div>
+                    <button class="list-menu-button">
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="list-cards"></div>
+                <div class="list-footer">
+                  <div>
+                    <button class="list-add-card-button">+ Add a card</button>
+                  </div>
+                  <div>
+                    <button class="list-add-card-template-button">
+                      <i class="fas fa-file"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="add-list-container">
+              <div class="add-list">
+                <button class="add-list-button">
+                  <i class="fas fa-plus"></i> Add another list
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
-    <div class="dropdown-card">
-
-    </div>
+    <div class="dropdown-card"></div>
     <script src="./assets/js/main.js"></script>
-</body>
+  </body>
 </html>
