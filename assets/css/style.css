@@ -173,7 +173,7 @@ main{
 
 .list-cards{
     position: relative;
-    width: 100%;
+    padding-bottom: 70px;
 }
 
 .list-header{
