@@ -270,7 +270,7 @@ main{
 }
 
 .card-movable{
-    position:absolute;
+    visibility: hidden;
     width: 100%;
     z-index: 2;
     -webkit-touch-callout: none;
