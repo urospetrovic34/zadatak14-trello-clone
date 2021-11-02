@@ -121,6 +121,7 @@ main{
     bottom: 0;
     right: 0;
     left: 0;
+    width: 100%;
     overflow-y: hidden;
     overflow-x: auto;
     white-space: nowrap;
@@ -132,6 +133,15 @@ main{
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
+}
+
+.main-mover{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
 }
 
 .main-container > div:nth-child(1){
@@ -147,7 +157,7 @@ main{
 
 ::-webkit-scrollbar{
     height: 14px;
-    width: 4px;
+    width: 0px;
     background: rgba(0,0,0,0.5);
     outline: none;
     border:none;
@@ -173,7 +183,8 @@ main{
 
 .list-cards{
     position: relative;
-    padding-bottom: 70px;
+    padding-bottom:25px;
+    overflow-y: auto;
 }
 
 .list-header{
@@ -263,6 +274,10 @@ main{
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
+}
+
+.cloned-card-image{
+    backface-visibility: hidden;
 }
 
 .border{
