@@ -122,6 +122,7 @@ main{
     right: 0;
     left: 0;
     width: 100%;
+    z-index: 3;
     overflow-y: hidden;
     overflow-x: auto;
     white-space: nowrap;
@@ -142,6 +143,7 @@ main{
     right: 0;
     left: 0;
     height: 100%;
+    z-index: -1;
 }
 
 .main-container > div:nth-child(1){

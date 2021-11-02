@@ -5,6 +5,7 @@ const cardLists = document.querySelectorAll(".list-cards")
 const mainMover = document.querySelector(".main-mover")
 const mainContainer = document.querySelector(".main-container")
 const lists = document.querySelectorAll(".list")
+const addListButton = document.querySelector(".add-list-button")
 let x = 0
 let y = 0
 let scrollLeft
@@ -81,9 +82,14 @@ mainMover.addEventListener("mouseup",(e)=>{
 })
 
 mainMover.addEventListener("mousemove",(e)=>{
-    if (!onMove) return
     e.preventDefault()
-    const x = e.pageX - mainContainer.offsetLeft
-    const move = x - startX
-    mainContainer.scrollLeft = scrollLeft - move
+    if(onMove){
+        const x = e.pageX - mainContainer.offsetLeft
+        const move = x - startX
+        mainContainer.scrollLeft = scrollLeft - move
+    }
+})
+
+addListButton.addEventListener("click",(e)=>{
+    console.log("asd")
 })
