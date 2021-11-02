@@ -107,6 +107,10 @@ addListButton.addEventListener("click", (e) => {
 	console.log("asd");
 });
 
+//Vanja
+cards.forEach((card) => {
+	card.addEventListener("click", toggleModal);
+});
 const headerColor = localStorage.getItem("headerColor");
 const description = localStorage.getItem("description");
 
@@ -258,5 +262,17 @@ function addChecklistTitle(e) {
 	}
 }
 function toggleModal() {
-	return cardModalWrapper.classList.add("d-none");
+	let result = cardModalWrapper.classList.toggle("d-none");
+	if (result) {
+		return result;
+	}
+	let list = this.parentElement.parentElement.querySelector(".list-title").value;
+	let title = this.querySelector(".card-name").innerText;
+
+	let modalList = document.querySelector("#modal-list");
+	let modalTitle = document.querySelector("#modal-title");
+
+	modalTitle.textContent = title;
+	modalList.textContent = list;
+	return result;
 }
