@@ -1,22 +1,28 @@
 const body = document.querySelector("body")
 const listContainerWrapper = document.querySelector(".list-container-wrapper")
-const cards = document.getElementsByClassName("card")
+const cards = document.querySelectorAll(".card")
 const cardLists = document.querySelectorAll(".list-cards")
+const listContainers = document.querySelectorAll(".list-container")
 const mainMover = document.querySelector(".main-mover")
 const mainContainer = document.querySelector(".main-container")
 const lists = document.querySelectorAll(".list")
 const addListButton = document.querySelector(".add-list-button")
 const addCardButton = document.querySelectorAll(".list-add-card-button")
 const addCardFinalButton = document.querySelectorAll(".add-card-final-button")
+const cancelCardButton = document.querySelectorAll(".cancel-add-button")
+const cancelListButton = document.querySelector(".cancel-add-list-button")
+const addListFinalButton = document.querySelector(".add-list-final-button")
 let x = 0
 let y = 0
+let x1 = 0
+let y1 = 0
 let scrollLeft
 let startX
 let draggedItem
 let isActive = false
 let onMove = false
-let cloneCard
-let cloneCardContainer
+let clonedItem
+let clonedItemContainer
 
 console.log(cardLists)
 
@@ -26,107 +32,283 @@ window.addEventListener("load",(e)=>{
     mainMover.style.width = mainContainer.scrollWidth + "px"
 })
 
-Array.from(cards).forEach(card => card.addEventListener('drag',(e)=>{
-    card.classList.add("card-movable")
-    cloneCardContainer.style.top = 57 + "px"
-    cloneCardContainer.style.left = 57 + "px"
+cards.forEach(card => card.addEventListener("drag",(e)=>{
+    dragItem(card,e)
 }))
 
-Array.from(cards).forEach(card => card.addEventListener('dragstart',(e)=>{
-    draggedItem = card
-    cloneCard = card.cloneNode(true)
-    cloneCard.className = "cloned-card-image"
-    cloneCard.style.position = "absolute"
-    cloneCard.style.opacity = 1
-    y = e.clientY - cloneCard.getBoundingClientRect().top + "px"
-    x = e.clientX - cloneCard.getBoundingClientRect().left + "px"
-    cloneCard.style.width = "180px"
-    cloneCardContainer = document.createElement("div")
-    cloneCardContainer.className = "clone-card-container"
-    cloneCardContainer.appendChild(cloneCard)
-    body.appendChild(cloneCardContainer)
-    let img = new Image()
-    e.dataTransfer.setDragImage(img,5550,5550)
-    e.dataTransfer.effectAllowed = "copyMove"
-},false))
-
-Array.from(cards).forEach(card => card.addEventListener('dragend',(e)=>{
-    body.removeChild(cloneCardContainer)
-    card.classList.remove("card-movable")
+cards.forEach(card => card.addEventListener("mousedown",(e)=>{
+    dragMouseDownItem(card,e)
 }))
 
-Array.from(cards).forEach(card => card.addEventListener('dragover',(e)=>{
-    e.preventDefault()
-    e.dataTransfer.dropEffect = "copy"
-    if(!card.nextElementSibling){
-        card.parentNode.appendChild(draggedItem)
-    }
-    else{
-        card.parentNode.insertBefore(draggedItem,card)
-    }
+cards.forEach(card => card.addEventListener("dragstart",(e)=>{
+    dragStartItem(card,e)
 }))
 
-cardLists.forEach(list => list.addEventListener('dragover',(e)=>{
-    e.preventDefault()
-    e.dataTransfer.dropEffect = "copy"
-    if(list.textContent.trim() === ""){
-        list.appendChild(draggedItem)
-    }
+cards.forEach(card => card.addEventListener("dragend",(e)=>{
+    dragEndItem(card,e)
+}))
+
+cards.forEach(card => card.addEventListener("dragover",(e)=>{
+    dragOverItem(card,e)
+}))
+
+cardLists.forEach(list => list.addEventListener("dragover",(e)=>{
+    dragOverList(list,e)
+}))
+
+listContainers.forEach(container => container.addEventListener("dragover",(e)=>{
+    dragOverList(container.querySelector(".list"),e)
 }))
 
 mainMover.addEventListener("mousedown",(e)=>{
-    onMove = true
-    startX = e.pageX - mainContainer.offsetLeft
-    scrollLeft = mainContainer.scrollLeft
+    moveScreenDown(e)
 })
 
 mainMover.addEventListener("mouseleave",(e)=>{
-    onMove = false
+    moveScreenLeave(e)
 })
 
 mainMover.addEventListener("mouseup",(e)=>{
-    onMove = false
+    moveScreenUp(e)
 })
 
 mainMover.addEventListener("mousemove",(e)=>{
-    e.preventDefault()
-    if(onMove){
-        const x = e.pageX - mainContainer.offsetLeft
-        const move = x - startX
-        mainContainer.scrollLeft = scrollLeft - move
-    }
+    moveScreenMove(e)
 })
 
-addCardButton.forEach(addButton => addButton.addEventListener("click",(e)=>{
-    addButton.closest(".list-footer").classList.add("hidden")
-    addButton.closest(".list").querySelector(".add-card-textarea-container").classList.add("visible")
+addCardButton.forEach(button => button.addEventListener("click",(e)=>{
+    openAddButton(button,e)
 }))
 
-addCardFinalButton.forEach(addFinalButton => addFinalButton.addEventListener("click",(e)=>{
-    if(addFinalButton.closest(".add-card-textarea-container").querySelector(".add-card-textarea").value.length!==0){
-    const newCard = document.createElement('div')
-    newCard.innerHTML = `
-    <div class="card">
-      <p class="card-name">${addFinalButton.closest(".add-card-textarea-container").querySelector(".add-card-textarea").value}</p>
-      <div class="card-more-info">
-        <button>
-          <i class="fas fa-align-justify"></i>
-        </button>
-        <button>
-          <i class="fas fa-check"></i>
-        </button>
-        <button>
-          <i class="fas fa-paperclip"></i>
-        </button>
-      </div>
-    </div>`
-    addFinalButton.closest(".list").querySelector(".list-cards").appendChild(newCard)
-    addFinalButton.closest(".list").querySelector(".list-footer").classList.remove("hidden")
-    addFinalButton.closest(".list").querySelector(".add-card-textarea-container").classList.remove("visible")
+cancelCardButton.forEach(button => button.addEventListener("click",(e)=>{
+    cancelAddButton(button,e)
+}))
+
+addCardFinalButton.forEach(button => button.addEventListener("click",(e)=>{
+    successAddButton(button,e)
+}))
+
+addListButton.addEventListener("click",(e)=>{
+    openAddListButton(addListButton,e)
+})
+
+cancelListButton.addEventListener("click",(e)=>{
+    cancelAddListButton(addListButton,e)
+})
+
+addListFinalButton.addEventListener("click",(e)=>{
+    successAddListButton(addListFinalButton,e)
+})
+
+const dragItem = (item,e) => {
+	item.classList.add("card-movable")
+    clonedItem.style.top = e.pageY - y + 'px'
+    clonedItem.style.left = e.pageX - x + 'px'
+}
+
+const dragMouseDownItem = (item,e) => {
+    y = e.clientY - item.getBoundingClientRect().top
+    x = e.clientX - item.getBoundingClientRect().left
+}
+
+const dragStartItem = (item,e) => {
+	draggedItem = item
+    clonedItem = item.cloneNode(true)
+    clonedItem.className = "cloned-card"
+    clonedItem.style.width = item.clientWidth + "px"
+    clonedItem.style.height = item.clientHeight + "px"
+    body.appendChild(clonedItem)
+    const img = new Image()
+    e.dataTransfer.setDragImage(img,10000,10000)
+	e.dataTransfer.effectAllowed = "copyMove"
+}
+
+const dragEndItem = (item,e) => {
+    body.removeChild(clonedItem)
+	item.classList.remove("card-movable")
+}
+
+const dragOverItem = (item,e) => {
+	e.preventDefault()
+	e.dataTransfer.dropEffect = "copy"
+	if(!item.nextElementSibling){
+		item.parentNode.appendChild(draggedItem)
+	}
+	else{
+		item.parentNode.insertBefore(draggedItem,item)
+	}
+}
+
+const dragOverList = (item,e) => {
+	e.preventDefault()
+	e.dataTransfer.dropEffect = "copy"
+	if(item.textContent.trim() === ""){
+		item.appendChild(draggedItem)
+	}
+}
+
+const moveScreenDown = (e) => {
+	onMove = true
+    startX = e.pageX - mainContainer.offsetLeft
+    scrollLeft = mainContainer.scrollLeft
+    document.body.style.cursor = "grabbing"
+}
+
+const moveScreenLeave = (e) => {
+	onMove = false
+    document.body.style.cursor = "auto"
+}
+
+const moveScreenUp = (e) => {
+	onMove = false
+    document.body.style.cursor = "auto"
+}
+
+const moveScreenMove = (e) => {
+	e.preventDefault()
+	if(onMove){
+        document.body.style.cursor = "grabbing"
+		const x = e.pageX - mainContainer.offsetLeft
+        const move = x - startX
+        mainContainer.scrollLeft = scrollLeft - move
+	}
+}
+
+const openAddButton = (item,e) => {
+    item.closest(".list").querySelector(".list-footer").classList.add("hidden")
+    item.closest(".list").querySelector(".add-card-textarea-container").classList.add("visible")
+}
+
+const cancelAddButton = (item,e) => {
+    item.closest(".list").querySelector(".list-footer").classList.remove("hidden")
+    item.closest(".list").querySelector(".add-card-textarea-container").classList.remove("visible")
+}
+
+const openAddListButton = (item,e) => {
+    item.closest(".add-list-container").querySelector(".add-list").classList.add("hidden")
+    item.closest(".add-list-container").querySelector(".add-list-input-container").classList.add("visible-flex")
+}
+
+const cancelAddListButton = (item,e) => {
+    item.closest(".add-list-container").querySelector(".add-list").classList.remove("hidden")
+    item.closest(".add-list-container").querySelector(".add-list-input-container").classList.remove("visible-flex")
+}
+
+const successAddButton = (item,e) => {
+    if(item.closest(".add-card-textarea-container").querySelector(".add-card-textarea").value.length!==0){
+        const newCard = document.createElement('div')
+        newCard.className = "card"
+        newCard.setAttribute('draggable',true)
+        newCard.innerHTML = 
+            `<p class="card-name">${item.closest(".add-card-textarea-container").querySelector(".add-card-textarea").value}</p>
+                <div class="card-more-info">
+                    <button>
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+                    <button>
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button>
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                </div>
+            `  
+        newCard.addEventListener("drag",(e)=>{
+            dragItem(newCard,e)
+        })
+        newCard.addEventListener("dragstart",(e)=>{
+            dragStartItem(newCard,e)
+        })
+        newCard.addEventListener("dragend",(e)=>{
+            dragEndItem(newCard,e)
+        })
+        newCard.addEventListener("dragover",(e)=>{
+            dragOverItem(newCard,e)
+        })
+        item.closest(".list").querySelector(".list-cards").appendChild(newCard)
+        item.closest(".list").querySelector(".list-footer").classList.remove("hidden")
+        item.closest(".list").querySelector(".add-card-textarea-container").classList.remove("visible")
+        item.closest(".add-card-textarea-container").querySelector(".add-card-textarea").value = ""
     }
+}
 
-    console.log(cards)
-}))
+const successAddListButton = (item,e) => {
+    if(item.closest(".add-list-container").querySelector(".add-list-input").value.length!==0){
+        const newList = document.createElement('div')
+        newList.className = "list-container"
+        newList.setAttribute('draggable',true)
+        newList.innerHTML = 
+            `
+            <div class="list">
+              <div class="list-header">
+                <div>
+                  <input
+                    type="text"
+                    class="list-title"
+                    value=${item.closest(".add-list-container").querySelector(".add-list-input").value}
+                  />
+                </div>
+                <div>
+                  <button class="list-menu-button">
+                    <i class="fas fa-ellipsis-h"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="list-cards"></div>
+              <div class="list-footer">
+                <div>
+                  <button class="list-add-card-button">+ Add a card</button>
+                </div>
+                <div>
+                  <button class="list-add-card-template-button">
+                    <i class="fas fa-file"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="add-card-textarea-container">
+                <div>
+                  <textarea class="add-card-textarea"></textarea>
+                </div>
+                <div class="add-card-textarea-second-row">
+                  <button class="add-card-final-button">Add card</button>
+                  <button class="cancel-add-button">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            `
+            newList.querySelector(".list-cards").addEventListener("dragover",(e)=>{
+                dragOverList(e.target,e)
+            })
+            newList.querySelector(".list-add-card-button").addEventListener("click",(e)=>{
+                openAddButton(e.target,e)
+            })
+            newList.querySelector(".cancel-add-button").addEventListener("click",(e)=>{
+                cancelAddButton(e.target,e)
+            })
+            newList.querySelector(".add-card-final-button").addEventListener("click",(e)=>{
+                successAddButton(e.target,e)
+            })
+
+            listContainerWrapper.insertBefore(newList,item.closest(".add-list-container"))
+            item.closest(".add-list-container").querySelector(".add-list").classList.remove("hidden")
+            item.closest(".add-list-container").querySelector(".add-list-input-container").classList.remove("visible-flex")
+            item.closest(".add-list-container").querySelector(".add-list-input").value = ""
+            mainMover.style.width = mainContainer.scrollWidth + "px"
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 const headerColor = localStorage.getItem("headerColor");
 const description = localStorage.getItem("description");
