@@ -306,6 +306,27 @@ main {
 	margin-top: 10px;
 }
 
+.add-card-textarea-container{
+    display: none;
+}
+
+.visible{
+    display:block;
+}
+.hidden{
+    display: none;
+}
+
+.add-card-textarea{
+    background-color:white;
+    color:black;
+}
+
+.add-card-textarea-second-row{
+    display: flex;
+    justify-content: space-between;
+}
+
 .list-add-card-button {
 	font-size: 13px;
 	font-weight: 500;
