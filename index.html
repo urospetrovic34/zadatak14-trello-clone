@@ -306,9 +306,79 @@
         </div>
       </main>
     </div>
-    <div class="card-modal">
-        
-    </div>
+    <div class="card-modal-wrapper">
+			<div class="card-modal">
+				<div id="modal-header" class="modal-close d-flex justify-content-end">
+					<button id="btn-close"><i class="fa fa-times d-flex justify-content-center align-items-center" aria-hidden="true"></i></button>
+				</div>
+				<div class="modal-content-wrapper d-flex">
+					<div class="modal-left">
+						<div class="modal-header">
+							<h1>Title</h1>
+							<small class="small">
+								in list
+								<u>PROMENLJIVA</u>
+							</small>
+						</div>
+						<div class="modal-description">
+							<h1>Description</h1>
+							<div id="description-wrapper" class="description-wrapper">
+								<div id="textarea-wrap">
+									<textarea name="description" id="description" cols="47" rows="3" placeholder="Add a more detailed description..."></textarea>
+									<div class="modal-description-btns d-none">
+										<button id="save" class="save">Save</button>
+										<button><i class="fa fa-times d-flex justify-content-center align-items-center" aria-hidden="true"></i></button>
+									</div>
+								</div>
+								<div id="description-text" class="d-none description-text">
+									<p id="desc" class="desc"></p>
+									<button id="edit" class="edit">Edit</budtton>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-right">
+						<!-- Sidebar -->
+						<p>Add to card</p>
+						<div class="modal-card d-flex align-items-center">
+							<div class="modal-menu d-none">
+								<input type="text" name="" id="title-checklist" placeholder="Title checklist">
+							</div>
+							<i class="fa-solid fa-square-check"></i>
+							<p>Checklist</p>
+						</div>
+						<div class="modal-card d-flex align-items-center">
+							<div class="modal-menu d-none">
+								<input type="file" name="" id="attachPicture" />
+							</div>
+							<i class="fa-solid fa-paperclip"></i>
+							<p>Attachment</p>
+						</div>
+						<div href="#" class="modal-card d-flex align-items-center">
+							<div id="modal-date" class="modal-menu d-none">
+								<input type="date" name="" id="">
+							</div>
+							<i class="fa-solid fa-calendar-days"></i>
+							<p>Dates</p>
+						</div>
+						<div class="modal-card d-flex align-items-center">
+							<div id="modal-menu" class="modal-menu d-none">
+								<p>Colors</p>
+								<div class="color-choice menu-card bg-blue"></div>
+								<div class="color-choice menu-card bg-red"></div>
+								<div class="color-choice menu-card bg-yellow"></div>
+								<input type="file" name="" id="coverImage" class="card" />
+								<div class="color-choice card">
+									<p>Remove cover</p>
+								</div>
+							</div>
+							<i class="fa-solid fa-image"></i>
+							<p>Cover</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
     <div class="dropdown-card">
 
     </div>
