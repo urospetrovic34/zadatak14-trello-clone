@@ -343,6 +343,10 @@ main {
     position: absolute;
     z-index: 3;
     display: flex;
+    top: 0;
+    left: 200px;
+    bottom: 0;
+    right: 0;
 }
 
 .cloned-card-image{
