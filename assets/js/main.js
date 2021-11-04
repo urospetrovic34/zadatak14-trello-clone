@@ -3,6 +3,7 @@ const listContainerWrapper = document.querySelector(".list-container-wrapper")
 const cards = document.querySelectorAll(".card")
 const cardLists = document.querySelectorAll(".list-cards")
 const listContainers = document.querySelectorAll(".list-container")
+const listHeaders = document.querySelectorAll(".list-header")
 const mainMover = document.querySelector(".main-mover")
 const mainContainer = document.querySelector(".main-container")
 const lists = document.querySelectorAll(".list")
@@ -12,6 +13,7 @@ const addCardFinalButton = document.querySelectorAll(".add-card-final-button")
 const cancelCardButton = document.querySelectorAll(".cancel-add-button")
 const cancelListButton = document.querySelector(".cancel-add-list-button")
 const addListFinalButton = document.querySelector(".add-list-final-button")
+const addListContainer = document.querySelector(".add-list-container")
 let x = 0
 let y = 0
 let x1 = 0
@@ -19,6 +21,7 @@ let y1 = 0
 let scrollLeft
 let startX
 let draggedItem
+let draggedList
 let isActive = false
 let onMove = false
 let clonedItem
@@ -27,38 +30,101 @@ let clonedItemContainer
 console.log(cardLists)
 
 window.addEventListener("load",(e)=>{
-    localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    Array.from(cards).forEach(card => card.setAttribute('draggable',true))
+    listContainerWrapper.innerHTML = localStorage.getItem("cardLists")
+    cards.forEach(card => card.setAttribute('draggable',true))
+    listHeaders.forEach(header => header.setAttribute('draggable',true))
     mainMover.style.width = mainContainer.scrollWidth + "px"
+
+
+
+
+    listContainerWrapper.querySelectorAll(".card").forEach(card => card.addEventListener("drag",(e)=>{
+        dragItem(card,e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    
+    listContainerWrapper.querySelectorAll(".list-header").forEach(header => header.addEventListener("drag",(e)=>{
+        dragListContainer(header.closest(".list-container"),e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    
+    listContainerWrapper.querySelectorAll(".card").forEach(card => card.addEventListener("mousedown",(e)=>{
+        dragMouseDownItem(card,e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    
+    listContainerWrapper.querySelectorAll(".list-header").forEach(header => header.addEventListener("mousedown",(e)=>{
+        dragMouseDownListContainer(header.closest(".list-container"),e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    
+    listContainerWrapper.querySelectorAll(".card").forEach(card => card.addEventListener("dragstart",(e)=>{
+        dragStartItem(card,e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    
+    listContainerWrapper.querySelectorAll(".list-header").forEach(header => header.addEventListener("dragstart",(e)=>{
+        dragStartListContainer(header.closest(".list-container"),e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    
+    listContainerWrapper.querySelectorAll(".card").forEach(card => card.addEventListener("dragend",(e)=>{
+        dragEndItem(card,e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    
+    listContainerWrapper.querySelectorAll(".list-header").forEach(header => header.addEventListener("dragend",(e)=>{
+        dragEndListContainer(header.closest(".list-container"),e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    
+    listContainerWrapper.querySelectorAll(".card").forEach(card => card.addEventListener("dragover",(e)=>{
+        dragOverItem(card,e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    
+    listContainerWrapper.querySelectorAll(".list-cards").forEach(list => list.addEventListener("dragover",(e)=>{
+        dragOverList(list,e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    
+    listContainerWrapper.querySelectorAll(".list-container").forEach(container => container.addEventListener("dragover",(e)=>{
+        dragOverListContainer(container,e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+
+
+
+
+
+
+
+    listContainerWrapper.querySelectorAll(".list-add-card-button").forEach(button => button.addEventListener("click",(e)=>{
+        openAddButton(button,e)
+    }))
+    listContainerWrapper.querySelectorAll(".cancel-add-button").forEach(button => button.addEventListener("click",(e)=>{
+        cancelAddButton(button,e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    listContainerWrapper.querySelectorAll(".add-card-final-button").forEach(button => button.addEventListener("click",(e)=>{
+        successAddButton(button,e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }))
+    listContainerWrapper.querySelector(".add-list-button").addEventListener("click",(e)=>{
+        openAddListButton(listContainerWrapper.querySelector(".add-list-button"),e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    })
+    listContainerWrapper.querySelector(".cancel-add-list-button").addEventListener("click",(e)=>{
+        cancelAddListButton(listContainerWrapper.querySelector(".cancel-add-list-button"),e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    })
+    listContainerWrapper.querySelector(".add-list-final-button").addEventListener("click",(e)=>{
+        successAddListButton(listContainerWrapper.querySelector(".add-list-final-button"),e)
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    })
 })
 
-cards.forEach(card => card.addEventListener("drag",(e)=>{
-    dragItem(card,e)
-}))
 
-cards.forEach(card => card.addEventListener("mousedown",(e)=>{
-    dragMouseDownItem(card,e)
-}))
-
-cards.forEach(card => card.addEventListener("dragstart",(e)=>{
-    dragStartItem(card,e)
-}))
-
-cards.forEach(card => card.addEventListener("dragend",(e)=>{
-    dragEndItem(card,e)
-}))
-
-cards.forEach(card => card.addEventListener("dragover",(e)=>{
-    dragOverItem(card,e)
-}))
-
-cardLists.forEach(list => list.addEventListener("dragover",(e)=>{
-    dragOverList(list,e)
-}))
-
-listContainers.forEach(container => container.addEventListener("dragover",(e)=>{
-    dragOverList(container.querySelector(".list"),e)
-}))
 
 mainMover.addEventListener("mousedown",(e)=>{
     moveScreenDown(e)
@@ -76,42 +142,34 @@ mainMover.addEventListener("mousemove",(e)=>{
     moveScreenMove(e)
 })
 
-addCardButton.forEach(button => button.addEventListener("click",(e)=>{
-    openAddButton(button,e)
-}))
-
-cancelCardButton.forEach(button => button.addEventListener("click",(e)=>{
-    cancelAddButton(button,e)
-}))
-
-addCardFinalButton.forEach(button => button.addEventListener("click",(e)=>{
-    successAddButton(button,e)
-}))
-
-addListButton.addEventListener("click",(e)=>{
-    openAddListButton(addListButton,e)
-})
-
-cancelListButton.addEventListener("click",(e)=>{
-    cancelAddListButton(addListButton,e)
-})
-
-addListFinalButton.addEventListener("click",(e)=>{
-    successAddListButton(addListFinalButton,e)
-})
-
 const dragItem = (item,e) => {
+    e.stopPropagation()
 	item.classList.add("card-movable")
     clonedItem.style.top = e.pageY - y + 'px'
     clonedItem.style.left = e.pageX - x + 'px'
 }
 
+const dragListContainer = (item,e) => {
+    e.stopPropagation()
+	item.classList.add("list-movable")
+    clonedItem.style.top = e.pageY - y + 'px'
+    clonedItem.style.left = e.pageX - x + 'px'
+}
+
 const dragMouseDownItem = (item,e) => {
+    e.stopPropagation()
+    y = e.clientY - item.getBoundingClientRect().top
+    x = e.clientX - item.getBoundingClientRect().left
+}
+
+const dragMouseDownListContainer = (item,e) => {
+    e.stopPropagation()
     y = e.clientY - item.getBoundingClientRect().top
     x = e.clientX - item.getBoundingClientRect().left
 }
 
 const dragStartItem = (item,e) => {
+    e.stopPropagation()
 	draggedItem = item
     clonedItem = item.cloneNode(true)
     clonedItem.className = "cloned-card"
@@ -123,14 +181,38 @@ const dragStartItem = (item,e) => {
 	e.dataTransfer.effectAllowed = "copyMove"
 }
 
+const dragStartListContainer = (item,e) => {
+    e.stopPropagation()
+	draggedList = item
+    clonedItem = item.cloneNode(true)
+    clonedItem.className = "cloned-list"
+    clonedItem.style.width = item.clientWidth + "px"
+    clonedItem.style.height = item.clientHeight + "px"
+    body.appendChild(clonedItem)
+    const img = new Image()
+    e.dataTransfer.setDragImage(img,10000,10000)
+	e.dataTransfer.effectAllowed = "copyMove"
+}
+
 const dragEndItem = (item,e) => {
+    e.stopPropagation()
     body.removeChild(clonedItem)
 	item.classList.remove("card-movable")
 }
 
+const dragEndListContainer = (item,e) => {
+    e.stopPropagation()
+    body.removeChild(clonedItem)
+	item.classList.remove("list-movable")
+}
+
 const dragOverItem = (item,e) => {
 	e.preventDefault()
+    e.stopPropagation()
 	e.dataTransfer.dropEffect = "copy"
+    if(item.parentNode.textContent.trim()===""){
+		item.parentNode.appendChild(draggedItem)
+    }
 	if(!item.nextElementSibling){
 		item.parentNode.appendChild(draggedItem)
 	}
@@ -141,9 +223,22 @@ const dragOverItem = (item,e) => {
 
 const dragOverList = (item,e) => {
 	e.preventDefault()
+    e.stopPropagation()
 	e.dataTransfer.dropEffect = "copy"
 	if(item.textContent.trim() === ""){
 		item.appendChild(draggedItem)
+	}
+}
+
+const dragOverListContainer = (item,e) => {
+	e.preventDefault()
+    e.stopPropagation()
+	e.dataTransfer.dropEffect = "copy"
+	if(!item.nextElementSibling){
+		item.parentNode.appendChild(draggedList)
+	}
+	else{
+		item.parentNode.insertBefore(draggedList,item)
 	}
 }
 
@@ -177,21 +272,25 @@ const moveScreenMove = (e) => {
 const openAddButton = (item,e) => {
     item.closest(".list").querySelector(".list-footer").classList.add("hidden")
     item.closest(".list").querySelector(".add-card-textarea-container").classList.add("visible")
+    localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
 }
 
 const cancelAddButton = (item,e) => {
     item.closest(".list").querySelector(".list-footer").classList.remove("hidden")
     item.closest(".list").querySelector(".add-card-textarea-container").classList.remove("visible")
+    localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
 }
 
 const openAddListButton = (item,e) => {
     item.closest(".add-list-container").querySelector(".add-list").classList.add("hidden")
     item.closest(".add-list-container").querySelector(".add-list-input-container").classList.add("visible-flex")
+    localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
 }
 
 const cancelAddListButton = (item,e) => {
     item.closest(".add-list-container").querySelector(".add-list").classList.remove("hidden")
     item.closest(".add-list-container").querySelector(".add-list-input-container").classList.remove("visible-flex")
+    localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
 }
 
 const successAddButton = (item,e) => {
@@ -202,19 +301,13 @@ const successAddButton = (item,e) => {
         newCard.innerHTML = 
             `<p class="card-name">${item.closest(".add-card-textarea-container").querySelector(".add-card-textarea").value}</p>
                 <div class="card-more-info">
-                    <button>
-                        <i class="fas fa-align-justify"></i>
-                    </button>
-                    <button>
-                        <i class="fas fa-check"></i>
-                    </button>
-                    <button>
-                        <i class="fas fa-paperclip"></i>
-                    </button>
                 </div>
             `  
         newCard.addEventListener("drag",(e)=>{
             dragItem(newCard,e)
+        })
+        newCard.addEventListener("mousedown",(e)=>{
+            dragMouseDownItem(newCard,e)
         })
         newCard.addEventListener("dragstart",(e)=>{
             dragStartItem(newCard,e)
@@ -229,6 +322,7 @@ const successAddButton = (item,e) => {
         item.closest(".list").querySelector(".list-footer").classList.remove("hidden")
         item.closest(".list").querySelector(".add-card-textarea-container").classList.remove("visible")
         item.closest(".add-card-textarea-container").querySelector(".add-card-textarea").value = ""
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
     }
 }
 
@@ -236,9 +330,9 @@ const successAddListButton = (item,e) => {
     if(item.closest(".add-list-container").querySelector(".add-list-input").value.length!==0){
         const newList = document.createElement('div')
         newList.className = "list-container"
-        newList.setAttribute('draggable',true)
         newList.innerHTML = 
             `
+            <div class="list-container-mover"></div>
             <div class="list">
               <div class="list-header">
                 <div>
@@ -278,6 +372,22 @@ const successAddListButton = (item,e) => {
               </div>
             </div>
             `
+            newList.querySelector(".list-header").setAttribute('draggable',true)
+            newList.querySelector(".list-header").addEventListener("drag",(e)=>{
+                dragListContainer(newList,e)
+            })
+            newList.querySelector(".list-header").addEventListener("mousedown",(e)=>{
+                dragMouseDownListContainer(newList,e)
+            })
+            newList.querySelector(".list-header").addEventListener("dragstart",(e)=>{
+                dragStartListContainer(newList,e)
+            })
+            newList.querySelector(".list-header").addEventListener("dragend",(e)=>{
+                dragEndListContainer(newList,e)
+            })
+            newList.addEventListener("dragover",(e)=>{
+                dragOverListContainer(newList,e)
+            })
             newList.querySelector(".list-cards").addEventListener("dragover",(e)=>{
                 dragOverList(e.target,e)
             })
@@ -296,6 +406,7 @@ const successAddListButton = (item,e) => {
             item.closest(".add-list-container").querySelector(".add-list-input-container").classList.remove("visible-flex")
             item.closest(".add-list-container").querySelector(".add-list-input").value = ""
             mainMover.style.width = mainContainer.scrollWidth + "px"
+            localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
     }
 }
 
