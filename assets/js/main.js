@@ -26,7 +26,7 @@ let isActive = false;
 let onMove = false;
 let clonedItem;
 let clonedItemContainer;
-var cardId = 1
+var cardId = 1;
 
 console.log(cardLists);
 
@@ -34,6 +34,8 @@ window.addEventListener("load", (e) => {
   if (!localStorage.getItem("cardLists")) {
     localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
   }
+
+  cardId = localStorage.getItem("cardId")
 
   listContainerWrapper.innerHTML = localStorage.getItem("cardLists");
   cards.forEach((card) => card.setAttribute("draggable", true));
@@ -373,9 +375,10 @@ const successAddButton = (item, e) => {
     const newCard = document.createElement("div");
     newCard.className = "card";
     newCard.setAttribute("draggable", true);
-    newCard.dataset.description = "OPIS"
-    newCard.dataset.id = cardId++
-    newCard.dataset.imageSrc = ""
+    newCard.dataset.description = "OPIS";
+    newCard.dataset.id = cardId++;
+    localStorage.setItem("cardId",cardId)
+    newCard.dataset.imageSrc = "";
     newCard.innerHTML = `<p class="card-name">${
       item
         .closest(".add-card-textarea-container")
@@ -547,56 +550,58 @@ let edit = document.querySelector("#edit");
 let desc = document.querySelector("#desc");
 
 const openModal = (card) => {
-  console.log(card)
+  console.log(card);
   cardModalWrapper.classList.add("visible-flex");
   localStorage.setItem("currentCard", card.dataset.id);
   document.querySelector("#modal-title").innerHTML = card.innerHTML;
   document.querySelector("#description").value = card.dataset.description;
-  console.log(parseInt(card.dataset.id))
-  console.log(parseInt(localStorage.getItem("currentCard")))
+  console.log(parseInt(card.dataset.id));
+  console.log(parseInt(localStorage.getItem("currentCard")));
 };
 
 const closeModal = () => {
   cardModalWrapper.classList.remove("visible-flex");
-  listContainerWrapper.querySelectorAll(".card").forEach((card)=>
-    card.dataset.id === localStorage.getItem("currentCard") ?
-    card.dataset.description = document.querySelector("#description").value
-    :
-    null
-  )
+  listContainerWrapper
+    .querySelectorAll(".card")
+    .forEach((card) =>
+      card.dataset.id === localStorage.getItem("currentCard")
+        ? (card.dataset.description =
+            document.querySelector("#description").value)
+        : null
+    );
   localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
 };
 
-document.querySelector("#coverImage").addEventListener("change",(e)=>{
-    listContainerWrapper.querySelectorAll(".card").forEach((card)=>{
-    if(card.dataset.id === localStorage.getItem("currentCard") && !card.dataset.imageSrc){
-        let img = document.createElement("img")
-        img.className = "card-image"
-        img.setAttribute("src",URL.createObjectURL(document.querySelector("#coverImage").files[0]))
-        img.onload = function(){
-            URL.revokeObjectURL(this.src)
-        }
-        card.insertBefore(img,card.querySelector(".card-name"))
-        localStorage.setItem(img)
-    }
-    else if(card.dataset.id === localStorage.getItem("currentCard") && card.dataset.imageSrc){
-        console.log(URL.createObjectURL(document.querySelector("#coverImage").files[0]))
-        let img = document.createElement("img")
-        img.setAttribute("src",URL.createObjectURL(document.querySelector("#coverImage").files[0]))
-        card.insertBefore(img,card.querySelector(".card-name"))
-        localStorage.setItem(img)
-    }
-    localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
-    }
-  )
-})
+document.querySelectorAll(".select-picture").forEach((picture) =>
+  picture.addEventListener("click", (e) => {
+    listContainerWrapper.querySelectorAll(".card").forEach((card) => {
+      if (
+        card.dataset.id === localStorage.getItem("currentCard") &&
+        card.dataset.imageSrc===""
+      ) {
+        let img = document.createElement("img");
+        img.className = "card-image";
+        img.setAttribute("src", picture.src);
+        card.dataset.imageSrc = picture.src
+        card.insertBefore(img, card.querySelector(".card-name"));
+        localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+      } else if (
+        card.dataset.id === localStorage.getItem("currentCard") &&
+        card.dataset.imageSrc!==""
+      ) {
+        card.querySelector(".card-image").setAttribute("src", picture.src);
+        localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+      }
+    });
+  })
+);
 
-btnClose.addEventListener("click", ()=>{
-    closeModal();
+btnClose.addEventListener("click", () => {
+  closeModal();
 });
 /*
 
-                    
+
 if (description) {
   textareaWrap.classList.add("d-none");
   textDescription.classList.remove("d-none");

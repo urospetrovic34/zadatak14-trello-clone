@@ -694,3 +694,15 @@ input[type="file"] {
 .hidden{
     display: none;
 }
+
+.pictures-selection-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.pictures-selection-container img{
+    object-fit: cover;
+    height:100px;
+    width:100px;
+    cursor: pointer;
+}
