@@ -66,8 +66,7 @@
           </div>
         </div>
       </main>
-    </div>
-    <div class="card-modal-wrapper">
+    </div><div class="card-modal-wrapper">
 			<div class="card-modal">
 				<div id="modal-header" class="modal-close d-flex justify-content-end">
 					<button id="btn-close"><i class="fa fa-times d-flex justify-content-center align-items-center" aria-hidden="true"></i></button>
@@ -75,13 +74,22 @@
 				<div class="modal-content-wrapper d-flex">
 					<div class="modal-left">
 						<div class="modal-header">
-							<h1>Title</h1>
-							<small class="small">
+							<h1 id="modal-title"></h1>
+							<!--<small class="small">
 								in list
-								<u>PROMENLJIVA</u>
-							</small>
+								<u id="modal-list">PROMENLJIVAAA</u>
+							</small>-->
 						</div>
-						<div class="modal-description">
+            <div class="modal-description">
+              <textarea name="description" id="description" cols="90" rows="10"></textarea>
+            </div>
+            <div>
+                <label for="coverImage" class="custom-file-upload">
+                  Upload Cover image
+                </label>
+								<input type="file" name="" id="coverImage" class="card" />
+            </div>
+						<!--<div class="modal-description">
 							<h1>Description</h1>
 							<div id="description-wrapper" class="description-wrapper">
 								<div id="textarea-wrap">
@@ -96,11 +104,11 @@
 									<button id="edit" class="edit">Edit</budtton>
 								</div>
 							</div>
-						</div>
+						</div>-->
 					</div>
-					<div class="modal-right">
+					<!--<div class="modal-right">-->
 						<!-- Sidebar -->
-						<p>Add to card</p>
+						<!--<p>Add to card</p>
 						<div class="modal-card d-flex align-items-center">
 							<div class="modal-menu d-none">
 								<input type="text" name="" id="title-checklist" placeholder="Title checklist">
@@ -128,7 +136,6 @@
 								<div class="color-choice menu-card bg-blue"></div>
 								<div class="color-choice menu-card bg-red"></div>
 								<div class="color-choice menu-card bg-yellow"></div>
-								<input type="file" name="" id="coverImage" class="card" />
 								<div class="color-choice card">
 									<p>Remove cover</p>
 								</div>
@@ -136,7 +143,7 @@
 							<i class="fa-solid fa-image"></i>
 							<p>Cover</p>
 						</div>
-					</div>
+					</div>-->
 				</div>
 			</div>
 		</div>

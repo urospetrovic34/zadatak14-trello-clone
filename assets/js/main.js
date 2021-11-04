@@ -1,343 +1,431 @@
-const body = document.querySelector("body")
-const listContainerWrapper = document.querySelector(".list-container-wrapper")
-const cards = document.querySelectorAll(".card")
-const cardLists = document.querySelectorAll(".list-cards")
-const listContainers = document.querySelectorAll(".list-container")
-const listHeaders = document.querySelectorAll(".list-header")
-const mainMover = document.querySelector(".main-mover")
-const mainContainer = document.querySelector(".main-container")
-const lists = document.querySelectorAll(".list")
-const addListButton = document.querySelector(".add-list-button")
-const addCardButton = document.querySelectorAll(".list-add-card-button")
-const addCardFinalButton = document.querySelectorAll(".add-card-final-button")
-const cancelCardButton = document.querySelectorAll(".cancel-add-button")
-const cancelListButton = document.querySelector(".cancel-add-list-button")
-const addListFinalButton = document.querySelector(".add-list-final-button")
-const addListContainer = document.querySelector(".add-list-container")
-let x = 0
-let y = 0
-let x1 = 0
-let y1 = 0
-let scrollLeft
-let startX
-let draggedItem
-let draggedList
-let isActive = false
-let onMove = false
-let clonedItem
-let clonedItemContainer
+const body = document.querySelector("body");
+const listContainerWrapper = document.querySelector(".list-container-wrapper");
+const cards = document.querySelectorAll(".card");
+const cardLists = document.querySelectorAll(".list-cards");
+const listContainers = document.querySelectorAll(".list-container");
+const listHeaders = document.querySelectorAll(".list-header");
+const mainMover = document.querySelector(".main-mover");
+const mainContainer = document.querySelector(".main-container");
+const lists = document.querySelectorAll(".list");
+const addListButton = document.querySelector(".add-list-button");
+const addCardButton = document.querySelectorAll(".list-add-card-button");
+const addCardFinalButton = document.querySelectorAll(".add-card-final-button");
+const cancelCardButton = document.querySelectorAll(".cancel-add-button");
+const cancelListButton = document.querySelector(".cancel-add-list-button");
+const addListFinalButton = document.querySelector(".add-list-final-button");
+const addListContainer = document.querySelector(".add-list-container");
+let x = 0;
+let y = 0;
+let x1 = 0;
+let y1 = 0;
+let scrollLeft;
+let startX;
+let draggedItem;
+let draggedList;
+let isActive = false;
+let onMove = false;
+let clonedItem;
+let clonedItemContainer;
+var cardId = 1
 
-console.log(cardLists)
+console.log(cardLists);
 
-window.addEventListener("load",(e)=>{
+window.addEventListener("load", (e) => {
+  if (!localStorage.getItem("cardLists")) {
+    localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+  }
 
+  listContainerWrapper.innerHTML = localStorage.getItem("cardLists");
+  cards.forEach((card) => card.setAttribute("draggable", true));
+  listHeaders.forEach((header) => header.setAttribute("draggable", true));
+  mainMover.style.width = mainContainer.scrollWidth + "px";
 
-    if(!localStorage.getItem("cardLists")){
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }
-
-    listContainerWrapper.innerHTML = localStorage.getItem("cardLists")
-    cards.forEach(card => card.setAttribute('draggable',true))
-    listHeaders.forEach(header => header.setAttribute('draggable',true))
-    mainMover.style.width = mainContainer.scrollWidth + "px"
-
-
-
-
-    listContainerWrapper.querySelectorAll(".card").forEach(card => card.addEventListener("drag",(e)=>{
-        dragItem(card,e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    
-    listContainerWrapper.querySelectorAll(".list-header").forEach(header => header.addEventListener("drag",(e)=>{
-        dragListContainer(header.closest(".list-container"),e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    
-    listContainerWrapper.querySelectorAll(".card").forEach(card => card.addEventListener("mousedown",(e)=>{
-        dragMouseDownItem(card,e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    
-    listContainerWrapper.querySelectorAll(".list-header").forEach(header => header.addEventListener("mousedown",(e)=>{
-        dragMouseDownListContainer(header.closest(".list-container"),e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    
-    listContainerWrapper.querySelectorAll(".card").forEach(card => card.addEventListener("dragstart",(e)=>{
-        dragStartItem(card,e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    
-    listContainerWrapper.querySelectorAll(".list-header").forEach(header => header.addEventListener("dragstart",(e)=>{
-        dragStartListContainer(header.closest(".list-container"),e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    
-    listContainerWrapper.querySelectorAll(".card").forEach(card => card.addEventListener("dragend",(e)=>{
-        dragEndItem(card,e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    
-    listContainerWrapper.querySelectorAll(".list-header").forEach(header => header.addEventListener("dragend",(e)=>{
-        dragEndListContainer(header.closest(".list-container"),e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    
-    listContainerWrapper.querySelectorAll(".card").forEach(card => card.addEventListener("dragover",(e)=>{
-        dragOverItem(card,e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    
-    listContainerWrapper.querySelectorAll(".list-cards").forEach(list => list.addEventListener("dragover",(e)=>{
-        dragOverList(list,e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    
-    listContainerWrapper.querySelectorAll(".list-container").forEach(container => container.addEventListener("dragover",(e)=>{
-        dragOverListContainer(container,e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-
-
-
-
-
-
-
-    listContainerWrapper.querySelectorAll(".list-add-card-button").forEach(button => button.addEventListener("click",(e)=>{
-        openAddButton(button,e)
-    }))
-    listContainerWrapper.querySelectorAll(".cancel-add-button").forEach(button => button.addEventListener("click",(e)=>{
-        cancelAddButton(button,e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    listContainerWrapper.querySelectorAll(".add-card-final-button").forEach(button => button.addEventListener("click",(e)=>{
-        successAddButton(button,e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }))
-    listContainerWrapper.querySelector(".add-list-button").addEventListener("click",(e)=>{
-        openAddListButton(listContainerWrapper.querySelector(".add-list-button"),e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+  listContainerWrapper.querySelectorAll(".card").forEach((card) =>
+    card.addEventListener("drag", (e) => {
+      dragItem(card, e);
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
     })
-    listContainerWrapper.querySelector(".cancel-add-list-button").addEventListener("click",(e)=>{
-        cancelAddListButton(listContainerWrapper.querySelector(".cancel-add-list-button"),e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+  );
+
+  listContainerWrapper.querySelectorAll(".list-header").forEach((header) =>
+    header.addEventListener("drag", (e) => {
+      dragListContainer(header.closest(".list-container"), e);
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
     })
-    listContainerWrapper.querySelector(".add-list-final-button").addEventListener("click",(e)=>{
-        successAddListButton(listContainerWrapper.querySelector(".add-list-final-button"),e)
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+  );
+
+  listContainerWrapper.querySelectorAll(".card").forEach((card) =>
+    card.addEventListener("mousedown", (e) => {
+      dragMouseDownItem(card, e);
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
     })
-})
+  );
 
+  listContainerWrapper.querySelectorAll(".list-header").forEach((header) =>
+    header.addEventListener("mousedown", (e) => {
+      dragMouseDownListContainer(header.closest(".list-container"), e);
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    })
+  );
 
+  listContainerWrapper.querySelectorAll(".card").forEach((card) =>
+    card.addEventListener("dragstart", (e) => {
+      dragStartItem(card, e);
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    })
+  );
 
-mainMover.addEventListener("mousedown",(e)=>{
-    moveScreenDown(e)
-})
+  listContainerWrapper.querySelectorAll(".list-header").forEach((header) =>
+    header.addEventListener("dragstart", (e) => {
+      dragStartListContainer(header.closest(".list-container"), e);
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    })
+  );
 
-mainMover.addEventListener("mouseleave",(e)=>{
-    moveScreenLeave(e)
-})
+  listContainerWrapper.querySelectorAll(".card").forEach((card) =>
+    card.addEventListener("dragend", (e) => {
+      dragEndItem(card, e);
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    })
+  );
 
-mainMover.addEventListener("mouseup",(e)=>{
-    moveScreenUp(e)
-})
+  listContainerWrapper.querySelectorAll(".list-header").forEach((header) =>
+    header.addEventListener("dragend", (e) => {
+      dragEndListContainer(header.closest(".list-container"), e);
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    })
+  );
 
-mainMover.addEventListener("mousemove",(e)=>{
-    moveScreenMove(e)
-})
+  listContainerWrapper.querySelectorAll(".card").forEach((card) =>
+    card.addEventListener("dragover", (e) => {
+      dragOverItem(card, e);
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    })
+  );
 
-const dragItem = (item,e) => {
-    e.stopPropagation()
-	item.classList.add("card-movable")
-    clonedItem.style.top = e.pageY - y + 'px'
-    clonedItem.style.left = e.pageX - x + 'px'
-}
+  listContainerWrapper.querySelectorAll(".list-cards").forEach((list) =>
+    list.addEventListener("dragover", (e) => {
+      dragOverList(list, e);
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    })
+  );
 
-const dragListContainer = (item,e) => {
-    e.stopPropagation()
-	item.classList.add("list-movable")
-    clonedItem.style.top = e.pageY - y + 'px'
-    clonedItem.style.left = e.pageX - x + 'px'
-}
+  listContainerWrapper
+    .querySelectorAll(".list-container")
+    .forEach((container) =>
+      container.addEventListener("dragover", (e) => {
+        dragOverListContainer(container, e);
+        localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+      })
+    );
 
-const dragMouseDownItem = (item,e) => {
-    e.stopPropagation()
-    y = e.clientY - item.getBoundingClientRect().top
-    x = e.clientX - item.getBoundingClientRect().left
-}
+  listContainerWrapper.querySelectorAll(".card").forEach((card) =>
+    card.addEventListener("click", (e) => {
+      openModal(card);
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    })
+  );
 
-const dragMouseDownListContainer = (item,e) => {
-    e.stopPropagation()
-    y = e.clientY - item.getBoundingClientRect().top
-    x = e.clientX - item.getBoundingClientRect().left
-}
+  listContainerWrapper
+    .querySelectorAll(".list-add-card-button")
+    .forEach((button) =>
+      button.addEventListener("click", (e) => {
+        openAddButton(button, e);
+      })
+    );
+  listContainerWrapper
+    .querySelectorAll(".cancel-add-button")
+    .forEach((button) =>
+      button.addEventListener("click", (e) => {
+        cancelAddButton(button, e);
+        localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+      })
+    );
+  listContainerWrapper
+    .querySelectorAll(".add-card-final-button")
+    .forEach((button) =>
+      button.addEventListener("click", (e) => {
+        successAddButton(button, e);
+        localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+      })
+    );
+  listContainerWrapper
+    .querySelector(".add-list-button")
+    .addEventListener("click", (e) => {
+      openAddListButton(
+        listContainerWrapper.querySelector(".add-list-button"),
+        e
+      );
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    });
+  listContainerWrapper
+    .querySelector(".cancel-add-list-button")
+    .addEventListener("click", (e) => {
+      cancelAddListButton(
+        listContainerWrapper.querySelector(".cancel-add-list-button"),
+        e
+      );
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    });
+  listContainerWrapper
+    .querySelector(".add-list-final-button")
+    .addEventListener("click", (e) => {
+      successAddListButton(
+        listContainerWrapper.querySelector(".add-list-final-button"),
+        e
+      );
+      localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    });
+});
 
-const dragStartItem = (item,e) => {
-    e.stopPropagation()
-	draggedItem = item
-    clonedItem = item.cloneNode(true)
-    clonedItem.className = "cloned-card"
-    clonedItem.style.width = item.clientWidth + "px"
-    clonedItem.style.height = item.clientHeight + "px"
-    body.appendChild(clonedItem)
-    const img = new Image()
-    e.dataTransfer.setDragImage(img,10000,10000)
-	e.dataTransfer.effectAllowed = "copyMove"
-}
+mainMover.addEventListener("mousedown", (e) => {
+  moveScreenDown(e);
+});
 
-const dragStartListContainer = (item,e) => {
-    e.stopPropagation()
-	draggedList = item
-    clonedItem = item.cloneNode(true)
-    clonedItem.className = "cloned-list"
-    clonedItem.style.width = item.clientWidth + "px"
-    clonedItem.style.height = item.clientHeight + "px"
-    body.appendChild(clonedItem)
-    const img = new Image()
-    e.dataTransfer.setDragImage(img,10000,10000)
-	e.dataTransfer.effectAllowed = "copyMove"
-}
+mainMover.addEventListener("mouseleave", (e) => {
+  moveScreenLeave(e);
+});
 
-const dragEndItem = (item,e) => {
-    e.stopPropagation()
-    body.removeChild(clonedItem)
-	item.classList.remove("card-movable")
-}
+mainMover.addEventListener("mouseup", (e) => {
+  moveScreenUp(e);
+});
 
-const dragEndListContainer = (item,e) => {
-    e.stopPropagation()
-    body.removeChild(clonedItem)
-	item.classList.remove("list-movable")
-}
+mainMover.addEventListener("mousemove", (e) => {
+  moveScreenMove(e);
+});
 
-const dragOverItem = (item,e) => {
-	e.preventDefault()
-    e.stopPropagation()
-	e.dataTransfer.dropEffect = "copy"
-    if(item.parentNode.textContent.trim()===""){
-		item.parentNode.appendChild(draggedItem)
-    }
-	if(!item.nextElementSibling){
-		item.parentNode.appendChild(draggedItem)
-	}
-	else{
-		item.parentNode.insertBefore(draggedItem,item)
-	}
-}
+const dragItem = (item, e) => {
+  e.stopPropagation();
+  item.classList.add("card-movable");
+  clonedItem.style.top = e.pageY - y + "px";
+  clonedItem.style.left = e.pageX - x + "px";
+};
 
-const dragOverList = (item,e) => {
-	e.preventDefault()
-    e.stopPropagation()
-	e.dataTransfer.dropEffect = "copy"
-	if(item.textContent.trim() === ""){
-		item.appendChild(draggedItem)
-	}
-}
+const dragListContainer = (item, e) => {
+  e.stopPropagation();
+  item.classList.add("list-movable");
+  clonedItem.style.top = e.pageY - y + "px";
+  clonedItem.style.left = e.pageX - x + "px";
+};
 
-const dragOverListContainer = (item,e) => {
-	e.preventDefault()
-    e.stopPropagation()
-	e.dataTransfer.dropEffect = "copy"
-	if(!item.nextElementSibling){
-		item.parentNode.appendChild(draggedList)
-	}
-	else{
-		item.parentNode.insertBefore(draggedList,item)
-	}
-}
+const dragMouseDownItem = (item, e) => {
+  e.stopPropagation();
+  y = e.clientY - item.getBoundingClientRect().top;
+  x = e.clientX - item.getBoundingClientRect().left;
+};
+
+const dragMouseDownListContainer = (item, e) => {
+  e.stopPropagation();
+  y = e.clientY - item.getBoundingClientRect().top;
+  x = e.clientX - item.getBoundingClientRect().left;
+};
+
+const dragStartItem = (item, e) => {
+  e.stopPropagation();
+  draggedItem = item;
+  clonedItem = item.cloneNode(true);
+  clonedItem.className = "cloned-card";
+  clonedItem.style.width = item.clientWidth + "px";
+  clonedItem.style.height = item.clientHeight + "px";
+  body.appendChild(clonedItem);
+  const img = new Image();
+  e.dataTransfer.setDragImage(img, 10000, 10000);
+  e.dataTransfer.effectAllowed = "copyMove";
+};
+
+const dragStartListContainer = (item, e) => {
+  e.stopPropagation();
+  draggedList = item;
+  clonedItem = item.cloneNode(true);
+  clonedItem.className = "cloned-list";
+  clonedItem.style.width = item.clientWidth + "px";
+  clonedItem.style.height = item.clientHeight + "px";
+  body.appendChild(clonedItem);
+  const img = new Image();
+  e.dataTransfer.setDragImage(img, 10000, 10000);
+  e.dataTransfer.effectAllowed = "copyMove";
+};
+
+const dragEndItem = (item, e) => {
+  e.stopPropagation();
+  body.removeChild(clonedItem);
+  item.classList.remove("card-movable");
+};
+
+const dragEndListContainer = (item, e) => {
+  e.stopPropagation();
+  body.removeChild(clonedItem);
+  item.classList.remove("list-movable");
+};
+
+const dragOverItem = (item, e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  e.dataTransfer.dropEffect = "copy";
+  if (item.parentNode.textContent.trim() === "") {
+    item.parentNode.appendChild(draggedItem);
+  }
+  if (!item.nextElementSibling) {
+    item.parentNode.appendChild(draggedItem);
+  } else {
+    item.parentNode.insertBefore(draggedItem, item);
+  }
+};
+
+const dragOverList = (item, e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  e.dataTransfer.dropEffect = "copy";
+  if (item.textContent.trim() === "") {
+    item.appendChild(draggedItem);
+  }
+};
+
+const dragOverListContainer = (item, e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  e.dataTransfer.dropEffect = "copy";
+  if (!item.nextElementSibling) {
+    item.parentNode.appendChild(draggedList);
+  } else {
+    item.parentNode.insertBefore(draggedList, item);
+  }
+};
 
 const moveScreenDown = (e) => {
-	onMove = true
-    startX = e.pageX - mainContainer.offsetLeft
-    scrollLeft = mainContainer.scrollLeft
-    document.body.style.cursor = "grabbing"
-}
+  onMove = true;
+  startX = e.pageX - mainContainer.offsetLeft;
+  scrollLeft = mainContainer.scrollLeft;
+  document.body.style.cursor = "grabbing";
+};
 
 const moveScreenLeave = (e) => {
-	onMove = false
-    document.body.style.cursor = "auto"
-}
+  onMove = false;
+  document.body.style.cursor = "auto";
+};
 
 const moveScreenUp = (e) => {
-	onMove = false
-    document.body.style.cursor = "auto"
-}
+  onMove = false;
+  document.body.style.cursor = "auto";
+};
 
 const moveScreenMove = (e) => {
-	e.preventDefault()
-	if(onMove){
-        document.body.style.cursor = "grabbing"
-		const x = e.pageX - mainContainer.offsetLeft
-        const move = x - startX
-        mainContainer.scrollLeft = scrollLeft - move
-	}
-}
+  e.preventDefault();
+  if (onMove) {
+    document.body.style.cursor = "grabbing";
+    const x = e.pageX - mainContainer.offsetLeft;
+    const move = x - startX;
+    mainContainer.scrollLeft = scrollLeft - move;
+  }
+};
 
-const openAddButton = (item,e) => {
-    item.closest(".list").querySelector(".list-footer").classList.add("hidden")
-    item.closest(".list").querySelector(".add-card-textarea-container").classList.add("visible")
-    localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-}
+const openAddButton = (item, e) => {
+  item.closest(".list").querySelector(".list-footer").classList.add("hidden");
+  item
+    .closest(".list")
+    .querySelector(".add-card-textarea-container")
+    .classList.add("visible");
+  localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+};
 
-const cancelAddButton = (item,e) => {
-    item.closest(".list").querySelector(".list-footer").classList.remove("hidden")
-    item.closest(".list").querySelector(".add-card-textarea-container").classList.remove("visible")
-    localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-}
+const cancelAddButton = (item, e) => {
+  item
+    .closest(".list")
+    .querySelector(".list-footer")
+    .classList.remove("hidden");
+  item
+    .closest(".list")
+    .querySelector(".add-card-textarea-container")
+    .classList.remove("visible");
+  localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+};
 
-const openAddListButton = (item,e) => {
-    item.closest(".add-list-container").querySelector(".add-list").classList.add("hidden")
-    item.closest(".add-list-container").querySelector(".add-list-input-container").classList.add("visible-flex")
-    localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-}
+const openAddListButton = (item, e) => {
+  item
+    .closest(".add-list-container")
+    .querySelector(".add-list")
+    .classList.add("hidden");
+  item
+    .closest(".add-list-container")
+    .querySelector(".add-list-input-container")
+    .classList.add("visible-flex");
+  localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+};
 
-const cancelAddListButton = (item,e) => {
-    item.closest(".add-list-container").querySelector(".add-list").classList.remove("hidden")
-    item.closest(".add-list-container").querySelector(".add-list-input-container").classList.remove("visible-flex")
-    localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-}
+const cancelAddListButton = (item, e) => {
+  item
+    .closest(".add-list-container")
+    .querySelector(".add-list")
+    .classList.remove("hidden");
+  item
+    .closest(".add-list-container")
+    .querySelector(".add-list-input-container")
+    .classList.remove("visible-flex");
+  localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+};
 
-const successAddButton = (item,e) => {
-    if(item.closest(".add-card-textarea-container").querySelector(".add-card-textarea").value.length!==0){
-        const newCard = document.createElement('div')
-        newCard.className = "card"
-        newCard.setAttribute('draggable',true)
-        newCard.innerHTML = 
-            `<p class="card-name">${item.closest(".add-card-textarea-container").querySelector(".add-card-textarea").value}</p>
+const successAddButton = (item, e) => {
+  if (
+    item
+      .closest(".add-card-textarea-container")
+      .querySelector(".add-card-textarea").value.length !== 0
+  ) {
+    const newCard = document.createElement("div");
+    newCard.className = "card";
+    newCard.setAttribute("draggable", true);
+    newCard.dataset.description = "OPIS"
+    newCard.dataset.id = cardId++
+    newCard.dataset.imageSrc = ""
+    newCard.innerHTML = `<p class="card-name">${
+      item
+        .closest(".add-card-textarea-container")
+        .querySelector(".add-card-textarea").value
+    }</p>
                 <div class="card-more-info">
                 </div>
-            `  
-        newCard.addEventListener("drag",(e)=>{
-            dragItem(newCard,e)
-        })
-        newCard.addEventListener("mousedown",(e)=>{
-            dragMouseDownItem(newCard,e)
-        })
-        newCard.addEventListener("dragstart",(e)=>{
-            dragStartItem(newCard,e)
-        })
-        newCard.addEventListener("dragend",(e)=>{
-            dragEndItem(newCard,e)
-        })
-        newCard.addEventListener("dragover",(e)=>{
-            dragOverItem(newCard,e)
-        })
-        item.closest(".list").querySelector(".list-cards").appendChild(newCard)
-        item.closest(".list").querySelector(".list-footer").classList.remove("hidden")
-        item.closest(".list").querySelector(".add-card-textarea-container").classList.remove("visible")
-        item.closest(".add-card-textarea-container").querySelector(".add-card-textarea").value = ""
-        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }
-}
+            `;
+    newCard.addEventListener("drag", (e) => {
+      dragItem(newCard, e);
+    });
+    newCard.addEventListener("mousedown", (e) => {
+      dragMouseDownItem(newCard, e);
+    });
+    newCard.addEventListener("dragstart", (e) => {
+      dragStartItem(newCard, e);
+    });
+    newCard.addEventListener("dragend", (e) => {
+      dragEndItem(newCard, e);
+    });
+    newCard.addEventListener("dragover", (e) => {
+      dragOverItem(newCard, e);
+    });
+    newCard.addEventListener("click", (e) => {
+      openModal(newCard);
+    });
+    item.closest(".list").querySelector(".list-cards").appendChild(newCard);
+    item
+      .closest(".list")
+      .querySelector(".list-footer")
+      .classList.remove("hidden");
+    item
+      .closest(".list")
+      .querySelector(".add-card-textarea-container")
+      .classList.remove("visible");
+    item
+      .closest(".add-card-textarea-container")
+      .querySelector(".add-card-textarea").value = "";
+    localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+  }
+};
 
-const successAddListButton = (item,e) => {
-    if(item.closest(".add-list-container").querySelector(".add-list-input").value.length!==0){
-        const newList = document.createElement('div')
-        newList.className = "list-container"
-        newList.innerHTML = 
-            `
+const successAddListButton = (item, e) => {
+  if (
+    item.closest(".add-list-container").querySelector(".add-list-input").value
+      .length !== 0
+  ) {
+    const newList = document.createElement("div");
+    newList.className = "list-container";
+    newList.innerHTML = `
             <div class="list-container-mover"></div>
             <div class="list">
               <div class="list-header">
@@ -345,7 +433,11 @@ const successAddListButton = (item,e) => {
                   <input
                     type="text"
                     class="list-title"
-                    value=${item.closest(".add-list-container").querySelector(".add-list-input").value}
+                    value=${
+                      item
+                        .closest(".add-list-container")
+                        .querySelector(".add-list-input").value
+                    }
                   />
                 </div>
                 <div>
@@ -377,56 +469,60 @@ const successAddListButton = (item,e) => {
                 </div>
               </div>
             </div>
-            `
-            newList.querySelector(".list-header").setAttribute('draggable',true)
-            newList.querySelector(".list-header").addEventListener("drag",(e)=>{
-                dragListContainer(newList,e)
-            })
-            newList.querySelector(".list-header").addEventListener("mousedown",(e)=>{
-                dragMouseDownListContainer(newList,e)
-            })
-            newList.querySelector(".list-header").addEventListener("dragstart",(e)=>{
-                dragStartListContainer(newList,e)
-            })
-            newList.querySelector(".list-header").addEventListener("dragend",(e)=>{
-                dragEndListContainer(newList,e)
-            })
-            newList.addEventListener("dragover",(e)=>{
-                dragOverListContainer(newList,e)
-            })
-            newList.querySelector(".list-cards").addEventListener("dragover",(e)=>{
-                dragOverList(e.target,e)
-            })
-            newList.querySelector(".list-add-card-button").addEventListener("click",(e)=>{
-                openAddButton(e.target,e)
-            })
-            newList.querySelector(".cancel-add-button").addEventListener("click",(e)=>{
-                cancelAddButton(e.target,e)
-            })
-            newList.querySelector(".add-card-final-button").addEventListener("click",(e)=>{
-                successAddButton(e.target,e)
-            })
+            `;
+    newList.querySelector(".list-header").setAttribute("draggable", true);
+    newList.querySelector(".list-header").addEventListener("drag", (e) => {
+      dragListContainer(newList, e);
+    });
+    newList.querySelector(".list-header").addEventListener("mousedown", (e) => {
+      dragMouseDownListContainer(newList, e);
+    });
+    newList.querySelector(".list-header").addEventListener("dragstart", (e) => {
+      dragStartListContainer(newList, e);
+    });
+    newList.querySelector(".list-header").addEventListener("dragend", (e) => {
+      dragEndListContainer(newList, e);
+    });
+    newList.addEventListener("dragover", (e) => {
+      dragOverListContainer(newList, e);
+    });
+    newList.querySelector(".list-cards").addEventListener("dragover", (e) => {
+      dragOverList(e.target, e);
+    });
+    newList
+      .querySelector(".list-add-card-button")
+      .addEventListener("click", (e) => {
+        openAddButton(e.target, e);
+      });
+    newList
+      .querySelector(".cancel-add-button")
+      .addEventListener("click", (e) => {
+        cancelAddButton(e.target, e);
+      });
+    newList
+      .querySelector(".add-card-final-button")
+      .addEventListener("click", (e) => {
+        successAddButton(e.target, e);
+      });
 
-            listContainerWrapper.insertBefore(newList,item.closest(".add-list-container"))
-            item.closest(".add-list-container").querySelector(".add-list").classList.remove("hidden")
-            item.closest(".add-list-container").querySelector(".add-list-input-container").classList.remove("visible-flex")
-            item.closest(".add-list-container").querySelector(".add-list-input").value = ""
-            mainMover.style.width = mainContainer.scrollWidth + "px"
-            localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
+    listContainerWrapper.insertBefore(
+      newList,
+      item.closest(".add-list-container")
+    );
+    item
+      .closest(".add-list-container")
+      .querySelector(".add-list")
+      .classList.remove("hidden");
+    item
+      .closest(".add-list-container")
+      .querySelector(".add-list-input-container")
+      .classList.remove("visible-flex");
+    item.closest(".add-list-container").querySelector(".add-list-input").value =
+      "";
+    mainMover.style.width = mainContainer.scrollWidth + "px";
+    localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+  }
+};
 const headerColor = localStorage.getItem("headerColor");
 const description = localStorage.getItem("description");
 
@@ -450,10 +546,61 @@ let save = document.querySelector("#save");
 let edit = document.querySelector("#edit");
 let desc = document.querySelector("#desc");
 
+const openModal = (card) => {
+  console.log(card)
+  cardModalWrapper.classList.add("visible-flex");
+  localStorage.setItem("currentCard", card.dataset.id);
+  document.querySelector("#modal-title").innerHTML = card.innerHTML;
+  document.querySelector("#description").value = card.dataset.description;
+  console.log(parseInt(card.dataset.id))
+  console.log(parseInt(localStorage.getItem("currentCard")))
+};
+
+const closeModal = () => {
+  cardModalWrapper.classList.remove("visible-flex");
+  listContainerWrapper.querySelectorAll(".card").forEach((card)=>
+    card.dataset.id === localStorage.getItem("currentCard") ?
+    card.dataset.description = document.querySelector("#description").value
+    :
+    null
+  )
+  localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+};
+
+document.querySelector("#coverImage").addEventListener("change",(e)=>{
+    listContainerWrapper.querySelectorAll(".card").forEach((card)=>{
+    if(card.dataset.id === localStorage.getItem("currentCard") && !card.dataset.imageSrc){
+        let img = document.createElement("img")
+        img.className = "card-image"
+        img.setAttribute("src",URL.createObjectURL(document.querySelector("#coverImage").files[0]))
+        img.onload = function(){
+            URL.revokeObjectURL(this.src)
+        }
+        card.insertBefore(img,card.querySelector(".card-name"))
+        localStorage.setItem(img)
+    }
+    else if(card.dataset.id === localStorage.getItem("currentCard") && card.dataset.imageSrc){
+        console.log(URL.createObjectURL(document.querySelector("#coverImage").files[0]))
+        let img = document.createElement("img")
+        img.setAttribute("src",URL.createObjectURL(document.querySelector("#coverImage").files[0]))
+        card.insertBefore(img,card.querySelector(".card-name"))
+        localStorage.setItem(img)
+    }
+    localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
+    }
+  )
+})
+
+btnClose.addEventListener("click", ()=>{
+    closeModal();
+});
+/*
+
+                    
 if (description) {
-	textareaWrap.classList.add("d-none");
-	textDescription.classList.remove("d-none");
-	desc.textContent = description;
+  textareaWrap.classList.add("d-none");
+  textDescription.classList.remove("d-none");
+  desc.textContent = description;
 }
 
 let attachPicture = document.querySelector("#attachPicture");
@@ -462,9 +609,12 @@ let isExistAttachment = false;
 let titleChecklist = document.querySelector("#title-checklist");
 let checklistItmes = document.querySelectorAll(".checklist-item");
 
-modalCards.forEach((modalCard) => modalCard.addEventListener("click", openCardMenu));
-colorChoices.forEach((colorChoice) => colorChoice.addEventListener("click", changeHeaderStyle));
-btnClose.addEventListener("click", toggleModal);
+modalCards.forEach((modalCard) =>
+  modalCard.addEventListener("click", openCardMenu)
+);
+colorChoices.forEach((colorChoice) =>
+  colorChoice.addEventListener("click", changeHeaderStyle)
+);
 
 textarea.addEventListener("click", showButtons);
 textarea.addEventListener("keypress", addDescription);
@@ -477,106 +627,109 @@ attachPicture.addEventListener("change", addAtachment);
 titleChecklist.addEventListener("keypress", addChecklistTitle);
 
 function openCardMenu() {
-	return this.firstElementChild.classList.toggle("d-none"); //.remove()
+  return this.firstElementChild.classList.toggle("d-none"); //.remove()
 }
 function changeHeaderStyle(e) {
-	if (this === colorChoices[3]) {
-		modalHeader.classList.remove(headerColor);
-		modalHeader.classList.remove(saveBgColor);
-		localStorage.removeItem("headerColor");
-	} else if (e.target.classList[2] !== saveBgColor) {
-		modalHeader.classList.remove(headerColor);
-		modalHeader.classList.remove(saveBgColor);
-		saveBgColor = e.target.classList[2];
-		localStorage.setItem("headerColor", e.target.classList[2]);
-		modalHeader.classList.add(e.target.classList[2]); //Background color class
-	}
+  if (this === colorChoices[3]) {
+    modalHeader.classList.remove(headerColor);
+    modalHeader.classList.remove(saveBgColor);
+    localStorage.removeItem("headerColor");
+  } else if (e.target.classList[2] !== saveBgColor) {
+    modalHeader.classList.remove(headerColor);
+    modalHeader.classList.remove(saveBgColor);
+    saveBgColor = e.target.classList[2];
+    localStorage.setItem("headerColor", e.target.classList[2]);
+    modalHeader.classList.add(e.target.classList[2]); //Background color class
+  }
 }
 function showButtons() {
-	let modalDescriptionBtn = document.querySelector(".modal-description-btns");
-	modalDescriptionBtn.classList.toggle("d-none");
-	textarea.classList.toggle("textarea1");
+  let modalDescriptionBtn = document.querySelector(".modal-description-btns");
+  modalDescriptionBtn.classList.toggle("d-none");
+  textarea.classList.toggle("textarea1");
 }
 function addDescription(e) {
-	if (e.type === "click") {
-		if (textarea.value !== "") {
-			textareaWrap.classList.toggle("d-none");
+  if (e.type === "click") {
+    if (textarea.value !== "") {
+      textareaWrap.classList.toggle("d-none");
 
-			textDescription.classList.toggle("d-none");
-			desc.textContent = textarea.value;
-			return localStorage.setItem("description", textarea.value);
-		} else {
-			showButtons();
-			return localStorage.removeItem("description");
-		}
-	} else if (e.key === "Enter") {
-		textareaWrap.classList.toggle("d-none");
+      textDescription.classList.toggle("d-none");
+      desc.textContent = textarea.value;
+      return localStorage.setItem("description", textarea.value);
+    } else {
+      showButtons();
+      return localStorage.removeItem("description");
+    }
+  } else if (e.key === "Enter") {
+    textareaWrap.classList.toggle("d-none");
 
-		textDescription.classList.toggle("d-none");
-		desc.textContent = textarea.value;
-		return localStorage.setItem("description", textarea.value);
-	}
+    textDescription.classList.toggle("d-none");
+    desc.textContent = textarea.value;
+    return localStorage.setItem("description", textarea.value);
+  }
 }
 function editDescription() {
-	textareaWrap.classList.toggle("d-none");
-	textDescription.classList.toggle("d-none");
-	textarea.value = description;
+  textareaWrap.classList.toggle("d-none");
+  textDescription.classList.toggle("d-none");
+  textarea.value = description;
 }
 function addAtachment() {
-	console.log(this.files[0].type);
-	if (this.files[0].type !== "image/png" && this.files[0].type !== "image/jpg" && this.files[0].type !== "image/gif" && this.files[0].type !== "image/jpeg") {
-		alert("This format is not valid!");
-		return;
-	}
-	const reader = new FileReader();
+  console.log(this.files[0].type);
+  if (
+    this.files[0].type !== "image/png" &&
+    this.files[0].type !== "image/jpg" &&
+    this.files[0].type !== "image/gif" &&
+    this.files[0].type !== "image/jpeg"
+  ) {
+    alert("This format is not valid!");
+    return;
+  }
+  const reader = new FileReader();
 
-	let uploaded_image = "";
+  let uploaded_image = "";
 
-	reader.addEventListener("load", () => {
-		uploaded_image = reader.result;
-		let img = document.createElement("img");
-		img.src = uploaded_image;
-		img.width = "150";
-		if (!isExistAttachment) {
-			let modalAttachment = document.createElement("div");
-			modalAttachment.id = "modal-attachment";
-			modalAttachment.classList.add("d-flex", "flex-column");
+  reader.addEventListener("load", () => {
+    uploaded_image = reader.result;
+    let img = document.createElement("img");
+    img.src = uploaded_image;
+    img.width = "150";
+    if (!isExistAttachment) {
+      let modalAttachment = document.createElement("div");
+      modalAttachment.id = "modal-attachment";
+      modalAttachment.classList.add("d-flex", "flex-column");
 
-			let h1 = document.createElement("h1");
-			let h1Content = document.createTextNode("Attachment");
-			h1.appendChild(h1Content);
-			modalAttachment.appendChild(h1);
+      let h1 = document.createElement("h1");
+      let h1Content = document.createTextNode("Attachment");
+      h1.appendChild(h1Content);
+      modalAttachment.appendChild(h1);
 
-			modalAttachment.appendChild(img);
-			modalLeft.appendChild(modalAttachment);
-			isExistAttachment = true;
-		} else {
-			let attach = document.querySelector("#modal-attachment");
-			attach.appendChild(img);
-		}
-	});
-	reader.readAsDataURL(this.files[0]);
+      modalAttachment.appendChild(img);
+      modalLeft.appendChild(modalAttachment);
+      isExistAttachment = true;
+    } else {
+      let attach = document.querySelector("#modal-attachment");
+      attach.appendChild(img);
+    }
+  });
+  reader.readAsDataURL(this.files[0]);
 }
 function addChecklistTitle(e) {
-	let val = this.value;
-	if (e.key === "Enter") {
-		let checkListDiv = document.createElement("div");
-		checkListDiv.classList.add("checklist");
+  let val = this.value;
+  if (e.key === "Enter") {
+    let checkListDiv = document.createElement("div");
+    checkListDiv.classList.add("checklist");
 
-		let h1 = document.createElement("h1");
-		let h1Content = document.createTextNode(val);
-		h1.appendChild(h1Content);
+    let h1 = document.createElement("h1");
+    let h1Content = document.createTextNode(val);
+    h1.appendChild(h1Content);
 
-		let input = document.createElement("input");
-		input.type = "text";
-		input.placeholder = "Add item";
-		input.classList.add("checklist-item");
+    let input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "Add item";
+    input.classList.add("checklist-item");
 
-		checkListDiv.appendChild(h1);
-		checkListDiv.appendChild(input);
-		modalLeft.appendChild(checkListDiv);
-	}
+    checkListDiv.appendChild(h1);
+    checkListDiv.appendChild(input);
+    modalLeft.appendChild(checkListDiv);
+  }
 }
-function toggleModal() {
-	return cardModalWrapper.classList.add("d-none");
-}
+*/
