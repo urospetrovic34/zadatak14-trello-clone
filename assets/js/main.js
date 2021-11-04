@@ -30,6 +30,12 @@ let clonedItemContainer
 console.log(cardLists)
 
 window.addEventListener("load",(e)=>{
+
+
+    if(!localStorage.getItem("cardLists")){
+        localStorage.setItem("cardLists",listContainerWrapper.innerHTML)
+    }
+
     listContainerWrapper.innerHTML = localStorage.getItem("cardLists")
     cards.forEach(card => card.setAttribute('draggable',true))
     listHeaders.forEach(header => header.setAttribute('draggable',true))
