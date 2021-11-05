@@ -375,7 +375,10 @@ const successAddButton = (item, e) => {
     const newCard = document.createElement("div");
     newCard.className = "card";
     newCard.setAttribute("draggable", true);
-    newCard.dataset.description = "OPIS";
+    newCard.dataset.name = item
+    .closest(".add-card-textarea-container")
+    .querySelector(".add-card-textarea").value
+    newCard.dataset.description = "Card description";
     newCard.dataset.id = cardId++;
     localStorage.setItem("cardId",cardId)
     newCard.dataset.imageSrc = "";
@@ -553,7 +556,7 @@ const openModal = (card) => {
   console.log(card);
   cardModalWrapper.classList.add("visible-flex");
   localStorage.setItem("currentCard", card.dataset.id);
-  document.querySelector("#modal-title").innerHTML = card.innerHTML;
+  document.querySelector("#modal-title").innerHTML = card.dataset.name;
   document.querySelector("#description").value = card.dataset.description;
   console.log(parseInt(card.dataset.id));
   console.log(parseInt(localStorage.getItem("currentCard")));
@@ -566,7 +569,7 @@ const closeModal = () => {
     .forEach((card) =>
       card.dataset.id === localStorage.getItem("currentCard")
         ? (card.dataset.description =
-            document.querySelector("#description").value)
+            (document.querySelector("#description").value))
         : null
     );
   localStorage.setItem("cardLists", listContainerWrapper.innerHTML);

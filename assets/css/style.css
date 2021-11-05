@@ -36,6 +36,9 @@ a {
 .justify-content-around {
 	justify-content: space-around;
 }
+.justify-content-between {
+	justify-content: space-between;
+}
 .align-items-center {
 	align-items: center;
 }
@@ -249,6 +252,7 @@ main {
     min-height: 50px;
     max-height: 650px;
     overflow-y:scroll;
+    overflow-x: hidden;
 }
 
 .list-header {
@@ -346,6 +350,7 @@ main {
 	padding: 10px;
 	cursor: pointer;
 	margin-bottom: 10px;
+    width: 100%;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -407,9 +412,12 @@ main {
 }
 
 .card-image {
-	object-fit: contain;
-	width: 100%;
+    object-fit: cover;
 	height: 210px;
+    display: block;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
 	pointer-events: none;
 }
 
@@ -436,7 +444,7 @@ main {
 .add-list-input-container{
     display:none;
     width: 100%;
-    flex-direction: column;
+    height: 100px;
 }
 
 .add-list-input-second-row{
@@ -474,7 +482,6 @@ main {
 
 /* Modal childs zbog potrebe modala sam u wrapper stavio background-image i ostala bg svojstva */
 .modal-close {
-	min-height: 120px;
 	margin-bottom: 20px;
 }
 .modal-close button {
@@ -515,7 +522,7 @@ textarea {
 	border: none;
 	outline: none;
 	padding: 15px 20px;
-	background-color: #bdbdbd;
+	background-color: white;
 	cursor: pointer;
 	transition: 0.3s;
 	min-height: 64px;
@@ -676,6 +683,10 @@ textarea {
 
 input[type="file"] {
     display: none;
+}
+
+.modal-header{
+    justify-content:space-between;
 }
 
 .custom-file-upload{
