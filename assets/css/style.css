@@ -1,0 +1,720 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap");
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Ubuntu", sans-serif;
+	background-image: url("../1405715792007-phxdc5-6g47h6pu59hd69b7lqx-original.jpg");
+	background-repeat: no-repeat;
+	background-size: 100vw 100vh;
+}
+
+body,
+textarea {
+	font-family: "Ubuntu", sans-serif;
+}
+a {
+	text-decoration: none;
+	color: #000;
+}
+.d-flex {
+	display: flex !important;
+}
+.d-none {
+	display: none !important;
+}
+.flex-column {
+	flex-direction: column;
+}
+.justify-content-center {
+	justify-content: center;
+}
+.justify-content-around {
+	justify-content: space-around;
+}
+.justify-content-between {
+	justify-content: space-between;
+}
+.align-items-center {
+	align-items: center;
+}
+.justify-content-end {
+	justify-content: end;
+}
+button,
+input {
+	font-family: "Ubuntu", sans-serif;
+	border: none;
+	cursor: pointer;
+	background-color: rgba(255, 255, 255, 0.3);
+	color: white;
+	padding: 1px 10px;
+	border-radius: 3px;
+}
+
+button {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 32px;
+}
+
+button:hover,
+input:hover {
+	background-color: rgba(255, 255, 255, 0.4);
+}
+
+button:active,
+input:active {
+	background-color: rgba(255, 255, 255, 0.6);
+}
+
+.wrapper {
+	min-height: 100vh;
+	width: 100%;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+}
+.card-modal-wrapper {
+	min-height: 100vh;
+	width: 100%;
+	position: relative;
+	display: none;
+	flex-direction: column;
+}
+.wrapper {
+	position: fixed;
+}
+.card-modal-wrapper {
+	position: absolute;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.5);
+	top: 0;
+}
+.card-modal {
+	max-width: 768px;
+	min-height: 650px;
+	background-color: #f4f5f7;
+	width: 100%;
+	border-radius: 5px;
+	margin: 48px 0;
+	padding: 25px 40px;
+}
+
+header {
+	background-color: rgba(0, 0, 0, 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 45px;
+}
+
+.sub-header {
+	background-color: rgba(0, 0, 0, 0.2);
+	padding: 10px 5px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	position: relative;
+}
+
+.sub-header-section-one {
+	display: flex;
+}
+
+.sub-header-section-two {
+	display: flex;
+}
+
+.header-paragraph {
+	font-size: 30px;
+	font-weight: 500;
+	letter-spacing: 1px;
+	cursor: pointer;
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.header-paragraph:hover {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+.board-name-input {
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+.board-name-input:focus {
+	color: black;
+	background-color: white;
+}
+
+.sub-header-separator {
+	height: 15px;
+	margin: auto 10px;
+	border-right: 1px solid white;
+}
+
+.menu-button {
+	margin-left: 5px;
+}
+
+.empty-list {
+	height: 100px;
+}
+
+main {
+	flex: 1;
+	position: relative;
+	display: block;
+}
+
+.list-container-wrapper{
+    pointer-events: none;
+    display:flex;
+    margin-top:20px;
+    gap:20px;
+}
+
+.main-container {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+    padding-left: 25px;
+    padding-right: 25px;
+	width: 100%;
+	z-index: 3;
+	overflow-y: hidden;
+	overflow-x: auto;
+	white-space: nowrap;
+	margin-bottom: 10px;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.main-mover{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+    z-index: -1;
+}
+
+.list-container {
+	min-width: 275px;
+	display: inline-block;
+	height: 100%;
+    padding-bottom: 100vh;
+}
+
+::-webkit-scrollbar {
+	height: 14px;
+	width: 0px;
+	background: rgba(0, 0, 0, 0.5);
+	outline: none;
+	border: none;
+	cursor: pointer;
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+	background: rgba(255, 255, 255, 0.5);
+	border-radius: 10px;
+    margin-top:10px;
+	outline: none;
+	border: none;
+	cursor: pointer;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	background-color: #dcdcdc;
+	padding: 10px;
+	border-radius: 5px;
+    pointer-events: auto;
+}
+
+.list-cards {
+    min-height: 50px;
+    max-height: 650px;
+    overflow-y:scroll;
+    overflow-x: hidden;
+}
+
+.list-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
+	margin-bottom: 5px;
+}
+
+.list-title {
+	font-size: 15px;
+	font-weight: 500;
+	letter-spacing: 1px;
+	padding: 4px;
+	color: #171717;
+	background-color: #dcdcdc;
+	outline: none;
+	border: none;
+}
+
+.list-title:focus {
+	background-color: white;
+}
+
+.list-title:focus:hover {
+	background-color: white;
+}
+
+.list-title:hover {
+	background-color: #dcdcdc;
+}
+
+.list-title:active {
+	background-color: #dcdcdc;
+}
+
+.list-menu-button,
+.list-add-card-template-button {
+	color: #171717;
+	background-color: transparent;
+}
+
+.list-menu-button:hover,
+.list-add-card-template-button:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.list-menu-button:active,
+.list-add-card-template-button:active {
+	background-color: rgba(0, 0, 0, 0.15);
+}
+
+.list-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+.add-card-textarea-container{
+    display: none;
+}
+
+.add-card-textarea{
+    background-color:white;
+    color:black;
+}
+
+.add-card-textarea-second-row{
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-add-card-button {
+	font-size: 13px;
+	font-weight: 500;
+	letter-spacing: 1px;
+	color: #171717;
+	background-color: #dcdcdc;
+}
+
+.list-add-card-button:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.list-add-card-button:active {
+	background-color: rgba(0, 0, 0, 0.15);
+}
+
+.card,
+.menu-card {
+	background-color: white;
+	padding: 10px;
+	cursor: pointer;
+	margin-bottom: 10px;
+    width: 100%;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.cloned-card{
+    position: absolute;
+    opacity: 1;
+    pointer-events: none;
+	padding: 10px;
+	background-color: white;
+    transform: rotate(10deg);
+}
+
+.cloned-list{
+    position: absolute;
+    opacity: 1;
+    pointer-events: none;
+	min-width: 275px;
+    transform: rotate(10deg);
+}
+
+.border {
+	border: 2px solid red;
+}
+
+.card-movable{
+	visibility: hidden;
+	width: 100%;
+	z-index: 2;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.list-movable {
+	visibility: hidden;
+	width: 275px;
+	z-index: 2;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.card:hover {
+	background-color: #eeeeee;
+}
+
+.card-image {
+    object-fit: cover;
+	height: 210px;
+    display: block;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+	pointer-events: none;
+}
+
+.mini-bar {
+	height: 8px;
+	width: 20%;
+	background-color: red;
+	border-radius: 75px;
+}
+
+.add-list-container {
+	min-width: 275px;
+	display: inline-block;
+	height: 100%;
+    pointer-events:auto;
+}
+
+.add-list {
+	display: flex;
+	flex-direction: column;
+	background-color: transparent;
+}
+
+.add-list-input-container{
+    display:none;
+    flex-direction: column;
+    width: 100%;
+    height: 100px;
+}
+
+.add-list-input-second-row{
+    display: flex;
+    justify-content:space-between;
+}
+
+.add-list-input{
+    outline: none;
+    border: none;
+    background-color:white;
+    color:black;
+    border-radius:0px;
+    height:30px;
+}
+
+.add-list-input:hover{
+    background-color:white;
+}
+
+.add-list-input:active{
+    background-color:white;
+}
+
+.list-container-mover{
+    position: absolute;
+    width: 400px;
+    height: 100%;
+}
+
+/*OVO TREBA DA SE SREDI*/
+.card-more-info > button {
+	color: red;
+}
+
+/* Modal childs zbog potrebe modala sam u wrapper stavio background-image i ostala bg svojstva */
+.modal-close {
+	margin-bottom: 20px;
+}
+.modal-close button {
+	background-color: unset;
+	font-size: 22px;
+	transition: 0.4s;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+.fa-times {
+	color: rgba(0, 0, 0, 0.85);
+	padding: 10px;
+	text-align: center;
+}
+.modal-content-wrapper {
+	flex-wrap: wrap;
+}
+.modal-close button:hover {
+	background-color: rgba(0, 0, 0, 0.15);
+}
+.modal-close button:active {
+	background-color: rgba(43, 43, 43, 0.5);
+}
+.small {
+	display: inline-block;
+}
+.modal-description {
+	margin-top: 40px;
+}
+.modal-left h1 {
+	margin-bottom: 20px;
+}
+textarea {
+	width: 100%;
+	border-radius: 5px;
+	font-size: 14px;
+	border: none;
+	outline: none;
+	padding: 15px 20px;
+	background-color: white;
+	cursor: pointer;
+	transition: 0.3s;
+	min-height: 64px;
+	resize: none;
+}
+
+.textarea1 {
+	background-color: #fff;
+	box-shadow: inset 0 0 0 2px #0079bf;
+	min-height: 180px;
+}
+.modal-description-btns {
+	margin-top: 15px;
+}
+.modal-description-btns .fa-times {
+	font-size: 18px;
+}
+.save,
+.description-wrapper .edit {
+	background-color: rgb(241, 58, 58);
+}
+.save:hover,
+.description-wrapper .edit:hover {
+	background-color: rgb(206, 30, 30);
+}
+.save:active,
+.description-wrapper .edit:active {
+	background-color: rgb(172, 27, 27);
+}
+.modal-right {
+	margin-left: 20px;
+}
+.modal-card {
+	margin-top: 20px;
+	background-color: rgb(235, 231, 231);
+	padding: 12px 23px;
+	border-radius: 3px;
+	position: relative;
+	cursor: pointer;
+}
+.modal-card i {
+	margin-right: 8px;
+}
+.card-modal input {
+	font-family: "Ubuntu";
+	color: #000;
+	width: 100%;
+	background-color: #fff;
+	padding: 5px 7px;
+}
+.modal-card:active {
+	background-color: rgb(229, 226, 226);
+}
+.modal-menu {
+	position: absolute;
+	z-index: 99;
+	top: 40px;
+	left: 60px;
+	background-color: rgb(235, 231, 231);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+	-webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+	max-width: 180px;
+	width: 100%;
+	padding: 20px 10px;
+}
+.modal-menu button {
+	margin-top: 10px;
+	color: #000;
+}
+.modal-menu .card,
+.modal-menu {
+	border-radius: 5px;
+}
+.modal-menu p {
+	margin-bottom: 10px;
+}
+.modal-menu input[type="file"] {
+	width: 100%;
+	color: #000;
+}
+.modal-menu .card > p {
+	margin-bottom: unset;
+}
+.bg-none {
+	background-color: unset;
+}
+.bg-blue {
+	background-color: #29cce5;
+}
+.modal-menu .bg-blue:hover {
+	background-color: #1f9caf;
+}
+.bg-yellow {
+	background-color: #f5dd29;
+}
+.modal-menu .bg-yellow:hover {
+	background-color: #c5b220;
+}
+.bg-red {
+	background-color: #ef7564;
+}
+.modal-menu .bg-red:hover {
+	background-color: #c46154;
+}
+
+.description-wrapper .edit {
+	margin-top: 20px;
+}
+.desc {
+	max-width: 400px;
+}
+.checklist {
+	margin-top: 10px;
+}
+
+@media screen and (min-width: 2082px) {
+	body {
+		background-size: 100vw auto;
+	}
+}
+
+@media screen and (max-width: 1100px) {
+	.sub-header {
+		flex-direction: column;
+	}
+	.sub-header-section-one {
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		width: 100%;
+	}
+	.sub-header-section-one > *:not(.sub-header-separator) {
+		margin-bottom: 5px;
+	}
+	.sub-header-section-two {
+		justify-content: flex-end;
+		flex-wrap: wrap;
+		width: 100%;
+	}
+}
+@media screen and (max-width: 811px) {
+	.card-modal {
+		max-width: 420px;
+	}
+	textarea {
+		width: 90%;
+	}
+	.modal-right {
+		margin-left: unset;
+		margin-top: 25px;
+	}
+}
+@media screen and (max-width: 420px) {
+	.card-modal {
+		max-width: 360px;
+	}
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.modal-header{
+    justify-content:space-between;
+}
+
+.custom-file-upload{
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.visible{
+    display:block;
+}
+.visible-flex{
+    display:flex;
+}
+.hidden{
+    display: none;
+}
+
+.pictures-selection-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.pictures-selection-container img{
+    object-fit: cover;
+    height:100px;
+    width:100px;
+    cursor: pointer;
+}

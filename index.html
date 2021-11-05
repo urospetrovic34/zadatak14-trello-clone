@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="icon" href="./assets/favicon-32x32.png" type="image/gif" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Not Trello</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <p class="header-paragraph">Trello</p>
+      </header>
+      <div class="sub-header">
+        <div class="sub-header-section-one">
+          <button class="board-first-button">Board</button>
+          <input type="text" class="board-name-input" />
+          <button class="bookmark-button">
+            <i class="far fa-star"></i>
+          </button>
+          <div class="sub-header-separator"></div>
+          <button class="workspace-button">Somebodys workspace</button>
+          <div class="sub-header-separator"></div>
+          <button class="workspace-visibility-button">
+            Workspace visibility
+          </button>
+          <div class="sub-header-separator"></div>
+          <button class="invite-button">Invite</button>
+        </div>
+        <div class="sub-header-section-two">
+          <button class="calendar">Calendar Power-Up</button>
+          <div class="sub-header-separator"></div>
+          <button class="filter-button">Filter</button>
+          <button class="menu-button">Show menu</button>
+        </div>
+      </div>
+      <main>
+        <div class="main-container">
+          <div class="main-mover"></div>
+          <div class="list-container-wrapper">
+            <div class="add-list-container">
+              <div class="add-list">
+                <button class="add-list-button">
+                  <i class="fas fa-plus"></i> Add another list
+                </button>
+              </div>
+              <div class="add-list-input-container">
+                <input class="add-list-input" type="text" placeholder="Enter list title...">
+                <div class="add-list-input-second-row">
+                  <button class="add-list-final-button">Add list</button>
+                  <button class="cancel-add-list-button">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div><div class="card-modal-wrapper">
+			<div class="card-modal">
+				<div class="modal-content-wrapper d-flex">
+					<div class="modal-left">
+						<div class="modal-header">
+						</div>
+            <div id="modal-header" class="modal-close d-flex justify-content-between">
+							<h1 id="modal-title"></h1>
+              <button id="btn-close"><i class="fa fa-times justify-content-between align-items-center" aria-hidden="true"></i></button>
+            </div>
+            <div class="modal-description">
+              <textarea name="description" id="description" cols="90" rows="10"></textarea>
+            </div>
+            <div>
+              <p>Add a cover image</p>
+              <div class="pictures-selection-container">
+                <div>
+                  <img src="./assets/cardPictures/14540_EsYVK_Snake_River_Jackson_Hole_Nature_lg.jpg" class="select-picture">
+                  <img src="./assets/cardPictures/devops_definition.png" class="select-picture">
+                  <img src="./assets/cardPictures/bar-graph.png" class="select-picture">
+                </div>
+                <div>
+                  <img src="./assets/cardPictures/emerald-lake-bc.jpg" class="select-picture">
+                  <img src="./assets/cardPictures/istockphoto-1061299140-612x612.jpg" class="select-picture">
+                  <img src="./assets/cardPictures/Mammalian_massive_14.png" class="select-picture">
+                </div>
+                <div>
+                  <img src="./assets/cardPictures/pencils-926078_960_720.jpg" class="select-picture">
+                  <img src="./assets/cardPictures/statistics-vs-machine-learning.png" class="select-picture">
+                  <img src="./assets/cardPictures/Roma-emblem.png" class="select-picture">
+                </div>
+              </div>
+            </div>
+				</div>
+			</div>
+		</div>
+    <script src="./assets/js/main.js"></script>
+  </body>
+</html>
