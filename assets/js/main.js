@@ -439,11 +439,11 @@ const successAddListButton = (item, e) => {
                   <input
                     type="text"
                     class="list-title"
-                    value=${
+                    value='${
                       item
                         .closest(".add-list-container")
                         .querySelector(".add-list-input").value
-                    }
+                    }'
                   />
                 </div>
                 <div>
