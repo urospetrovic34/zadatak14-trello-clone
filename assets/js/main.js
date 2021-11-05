@@ -28,9 +28,8 @@ let clonedItem;
 let clonedItemContainer;
 var cardId = 1;
 
-console.log(cardLists);
-
 window.addEventListener("load", (e) => {
+    localStorage.setItem("cardLists", "");
   if (!localStorage.getItem("cardLists")) {
     localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
   }
@@ -529,6 +528,7 @@ const successAddListButton = (item, e) => {
     localStorage.setItem("cardLists", listContainerWrapper.innerHTML);
   }
 };
+
 const headerColor = localStorage.getItem("headerColor");
 const description = localStorage.getItem("description");
 
@@ -553,13 +553,10 @@ let edit = document.querySelector("#edit");
 let desc = document.querySelector("#desc");
 
 const openModal = (card) => {
-  console.log(card);
   cardModalWrapper.classList.add("visible-flex");
   localStorage.setItem("currentCard", card.dataset.id);
   document.querySelector("#modal-title").innerHTML = card.dataset.name;
   document.querySelector("#description").value = card.dataset.description;
-  console.log(parseInt(card.dataset.id));
-  console.log(parseInt(localStorage.getItem("currentCard")));
 };
 
 const closeModal = () => {
